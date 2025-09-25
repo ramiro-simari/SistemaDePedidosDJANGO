@@ -5,9 +5,6 @@ from django.shortcuts import render, HttpResponse
 def home(request):
     return render(request, "SistemaPedidosWebApp/home.html")
 
-def servicios(request):
-    return render(request, "SistemaPedidosWebApp/servicios.html")
-
 def tienda(request):
     return render(request, "SistemaPedidosWebApp/tienda.html")
 

@@ -1,43 +1,50 @@
 {% extends "SistemaPedidosWebApp/base.html" %}
-
 {% load static %}
 
-{% block content %}
+{% block title %}Inicio - Gestión de Pedidos{% endblock %}
 
-   <!-- Heading -->
-   <section class="page-section clearfix">
-    <div class="container">
-      <div class="intro">
-        <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="{% static 'SistemaPedidosWebApp/img/principal.jpg' %}" alt="">
-        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-          <h2 class="section-heading mb-4" >
-            <span class="section-heading-upper">Puntualidad</span>
-            <span class="section-heading-lower">El mejor stock</span>
-          </h2>
-          <p class="mb-3">En la puertra de tu casa en menos de 48 h con el envío normal. En menos de 24 h con el envío express.
-          </p>
-         
+{% block content %}
+<!-- Hero -->
+<section class="text-center py-5 border-bottom">
+  <div class="container">
+    <h1 class="fw-bold display-4">Gestión de Pedidos</h1>
+    <p class="lead opacity-75">Organiza, controla y entrega con la máxima eficiencia</p>
+    <a href="#" class="btn btn-primary btn-lg mt-3">Comenzar</a>
+  </div>
+</section>
+
+<!-- Features -->
+<section class="py-5">
+  <div class="container">
+    <div class="row g-4 text-center">
+      <div class="col-md-4">
+        <div class="card p-4 h-100 shadow-sm">
+          <h3 class="fw-bold text-primary">🚀 Rápido</h3>
+          <p class="opacity-75">Procesa pedidos en segundos sin complicaciones.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100 shadow-sm">
+          <h3 class="fw-bold text-success">📊 Organizado</h3>
+          <p class="opacity-75">Todo centralizado, con reportes claros y simples.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card p-4 h-100 shadow-sm">
+          <h3 class="fw-bold text-danger">🔒 Seguro</h3>
+          <p class="opacity-75">Tus datos siempre protegidos con la mejor seguridad.</p>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-
-  
-    <!-- Message -->
-    <section class="page-section cta">
-      <div class="container">
-        <div class="row">
-          <div class="col-xl-9 mx-auto">
-            <div class="cta-inner text-center rounded">
-              <h2 class="section-heading mb-4">
-                <span class="section-heading-upper">Compromiso total</span>
-                <span class="section-heading-lower">Garantizado</span>
-              </h2>
-              <p class="mb-0">Con más de 75 años de experiencia a nuestras espaldas, desde Gestión de Pedidos tenemos los conocimientos y herramientas necesarios para llevar cualquier objeto a la puerta de su casa con puntualidad y profesionalidad.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- CTA -->
+<section class="py-5 text-center bg-primary text-white">
+  <div class="container">
+    <h2 class="fw-bold">Empieza a gestionar mejor tus pedidos hoy</h2>
+    <p class="mb-4">Interfaz moderna, adaptable y simple</p>
+    <a href="#" class="btn btn-light btn-lg">Crear pedido</a>
+  </div>
+</section>
 {% endblock %}
