@@ -1,22 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 {% extends "SistemaPedidosWebApp/base.html" %}
-
 {% load static %}
 
-{% block content %}
-<body>
-    {% for servicio in servicios %}
+{% block title %}Servicios - Gestión de Pedidos{% endblock %}
 
-        <h2>{{servicio.titulo}}</h2>
-        <p>{{servicio.contenido}}</p>
-        <p><img src="{{servicio.imagen.url}}" alt=""></p>
-    {% endfor %}
-</body>
-{% endblock%}
-</html>
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    <h1 class="fw-bold text-center mb-5">Nuestros Servicios</h1>
+
+    <div class="row g-4">
+      {% for servicio in servicios %}
+      <div class="col-12">
+        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
+          <div class="row g-0 align-items-center">
+            <!-- Imagen -->
+            <div class="col-md-4">
+              <img src="{{ servicio.imagen.url }}" class="img-fluid w-100 h-100 object-fit-cover" alt="{{ servicio.titulo }}">
+            </div>
+            <!-- Contenido -->
+            <div class="col-md-8">
+              <div class="card-body p-4">
+                <h3 class="card-title fw-bold">{{ servicio.titulo }}</h3>
+                <p class="card-text text-muted">{{ servicio.contenido }}</p>
+                <a href="#" class="btn btn-primary mt-2">Más información</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}
