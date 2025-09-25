@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'SistemaPedidosWebApp',
 ]
 
 MIDDLEWARE = [
@@ -75,7 +76,7 @@ WSGI_APPLICATION = 'SistemaDePedidos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'ArticulosClientes',
+        'NAME': 'articulosclientes',
         'USER': 'postgres',
         'PASSWORD': 'admin',
         'HOST': '127.0.0.1',
