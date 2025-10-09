@@ -23,5 +23,6 @@ urlpatterns = [
     path('', include('SistemaPedidosWebApp.urls')),
     path('servicios/', include('servicios.urls')),
     path('blog/', include('blog.urls')),
+    path('contacto/', include('contacto.urls')),
 ]
 
