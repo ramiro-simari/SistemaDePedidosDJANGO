@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+{% extends "SistemaPedidosWebApp/base.html" %}
+
+{% load static %}
+
+{% block content %}
+<body>
+  <div class="container">
+    <div class="row">
+      {% for producto in productos %}
+      <div class="col-md-3">
+          <div class="card" style="width: 100%; margin: 10px 10px;">
+
+            <!-- Imagen (solo si existe) -->
+              {% if producto.imagen %}
+              <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ post.titulo }}">
+              {% endif %}
+
+              <div class="card-body" style="text-align: center;">
+                <h6 class="card-title">{{producto.nombre}}</h6>
+                <p class="card-text">{{producto.precio}}&nbsp;$</p>
+              </div>
+
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+  </div>
+</body>
+{% endblock%}
+</html>
