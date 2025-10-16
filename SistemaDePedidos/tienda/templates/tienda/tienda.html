@@ -12,9 +12,14 @@
 {% block content %}
 <body>
   <div class="container">
-
+    
     <div style="float: right;">
-      {% include "carro/widget.html" %}
+      <br><br>
+      {% if request.user.is_authenticated %}
+        {% include "carro/widget.html" %}
+      {% else %}
+        <span class="alert alert-danger text-center">Login para ver el carro</span>
+      {% endif %}
     </div>
 
     <div class="row">
