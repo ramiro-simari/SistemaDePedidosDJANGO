@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+{% extends "SistemaPedidosWebApp/base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<body>
+    <form action="" method="POST">
+
+        {% csrf_token %}
+        <div style="width: 40%; margin: auto;">
+            
+            <br><br>
+
+            {% if messages %}
+
+                {% for mensaje in messages %}
+
+                    <span class="alert alert-{{mensaje.tags}}">{{mensaje}}</span>
+
+                {% endfor %}
+
+            {% endif %}
+
+            <br><br>
+
+            {{form|crispy}}
+
+            <button type="submit" name="" id="" class="btn btn-success">Login</button>
+        </div>
+    </form>
+</body>
+{% endblock%}
+</html>
