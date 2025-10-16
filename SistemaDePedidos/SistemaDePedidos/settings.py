@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'contacto',
     'tienda',
     'carro',
+    'autenticacion',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +146,6 @@ EMAIL_USE_TLS=True
 EMAIL_PORT=587
 EMAIL_HOST_USER="ramirosimari26@gmail.com"
 EMAIL_HOST_PASSWORD="aolc rjfo gtvo mqcc"
+
+CRISPY_ALLOWED_TEMPLATE_PACK='bootstrap5'
+CRISPY_TEMPLATE_PACK='bootstrap5'
