@@ -1,49 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 {% extends "SistemaPedidosWebApp/base.html" %}
-
 {% load static %}
 
 {% block content %}
-<body>
-  <div class="container">
-    
-    <div style="float: right;">
-      <br><br>
-      {% if request.user.is_authenticated %}
-        {% include "carro/widget.html" %}
-      {% else %}
-        <span class="alert alert-danger text-center">Login para ver el carro</span>
-      {% endif %}
-    </div>
+<div class="container py-5">
 
-    <div class="row">
-      {% for producto in productos %}
-      <div class="col-md-3">
-          <div class="card" style="width: 100%; margin: 10px 10px;">
-
-            <!-- Imagen (solo si existe) -->
-              {% if producto.imagen %}
-              <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ post.titulo }}">
-              {% endif %}
-
-              <div class="card-body" style="text-align: center;">
-                <h6 class="card-title">{{producto.nombre}}</h6>
-                <p class="card-text">{{producto.precio}}&nbsp;$</p>
-              </div>
-              <div class="card-footer text-center">
-                <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-success">Agregar al carro</a>
-              </div>
-          </div>
-        </div>
-        {% endfor %}
-    </div>
+  <!-- Título principal -->
+  <div class="text-center mb-5">
+    <h1 class="fw-bold text-primary">Nuestra Tienda</h1>
+    <p class="text-muted mb-0">Explorá nuestros productos y agregá al carrito lo que más te guste</p>
   </div>
-</body>
-{% endblock%}
-</html>
+
+  <!-- Catálogo de productos -->
+  <div class="row g-4">
+    {% for producto in productos %}
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+      <div class="card h-100 border-0 shadow-sm hover-shadow transition">
+        {% if producto.imagen %}
+          <img src="{{ producto.imagen.url }}" class="card-img-top rounded-top" alt="{{ producto.nombre }}">
+        {% else %}
+          <img src="{% static 'img/no-image.png' %}" class="card-img-top rounded-top" alt="Sin imagen">
+        {% endif %}
+
+        <div class="card-body text-center">
+          <h5 class="card-title fw-semibold text-dark">{{ producto.nombre }}</h5>
+          <p class="card-text text-success fw-bold mb-3">{{ producto.precio }} $</p>
+          <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-outline-primary w-100">
+            Agregar al carrito
+          </a>
+        </div>
+      </div>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center">
+      <div class="alert alert-info">No hay productos disponibles por el momento.</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Carrito flotante -->
+{% if request.user.is_authenticated %}
+  <div class="position-fixed top-50 end-0 translate-middle-y me-3" style="z-index: 1050; width: 340px;">
+    {% include "carro/widget.html" %}
+  </div>
+{% else %}
+  <div class="alert alert-warning text-center w-50 mx-auto my-5">
+    Iniciá sesión para ver tu carrito
+  </div>
+{% endif %}
+
+<!-- Estilos adicionales -->
+<style>
+  /* Sombras suaves y efecto hover */
+  .hover-shadow {
+    transition: all 0.3s ease;
+  }
+  .hover-shadow:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.15) !important;
+  }
+
+  /* Ajuste responsive del carrito flotante */
+  @media (max-width: 992px) {
+    .position-fixed {
+      position: static !important;
+      transform: none !important;
+      width: 100% !important;
+      margin: 1rem 0;
+    }
+  }
+
+</style>
+{% endblock %}

@@ -4,47 +4,99 @@
 {% block title %}Inicio - Gestión de Pedidos{% endblock %}
 
 {% block content %}
-<!-- Hero -->
-<section class="text-center py-5 border-bottom">
-  <div class="container">
-    <h1 class="fw-bold display-4">Gestión de Pedidos</h1>
-    <p class="lead opacity-75">Organiza, controla y entrega con la máxima eficiencia</p>
-    <a href="#" class="btn btn-primary btn-lg mt-3">Comenzar</a>
+
+<!-- Hero principal -->
+<section class="text-center py-5 bg-light position-relative overflow-hidden">
+  <div class="container position-relative">
+    <h1 class="fw-bold display-4 text-primary mb-3 animate-fade">
+      Gestión de Pedidos
+    </h1>
+    <p class="lead text-muted mb-4 animate-fade-delay">
+      Organiza, controla y entrega con máxima eficiencia 🚚
+    </p>
+    <a href="{% url 'Tienda' %}" class="btn btn-primary btn-lg shadow-sm px-5 animate-fade-delay">
+      Comenzar ahora
+    </a>
   </div>
+
+  <!-- Fondo decorativo -->
+<div class="position-absolute top-0 start-0 w-100 h-100"
+     style="background: radial-gradient(circle at 70% 30%, rgba(13,110,253,.1), transparent 70%);
+            pointer-events: none;">
+</div>
+
 </section>
 
-<!-- Features -->
-<section class="py-5">
+<!-- Sección de características -->
+<section class="py-5 bg-white">
   <div class="container">
     <div class="row g-4 text-center">
       <div class="col-md-4">
-        <div class="card p-4 h-100 shadow-sm">
-          <h3 class="fw-bold text-primary">🚀 Rápido</h3>
-          <p class="opacity-75">Procesa pedidos en segundos sin complicaciones.</p>
+        <div class="card border-0 shadow-sm h-100 p-4 hover-card">
+          <div class="mb-3 display-5 text-primary">⚡</div>
+          <h3 class="fw-bold text-dark">Rápido</h3>
+          <p class="text-muted">
+            Procesá tus pedidos en segundos sin complicaciones ni demoras.
+          </p>
         </div>
       </div>
+
       <div class="col-md-4">
-        <div class="card p-4 h-100 shadow-sm">
-          <h3 class="fw-bold text-success">📊 Organizado</h3>
-          <p class="opacity-75">Todo centralizado, con reportes claros y simples.</p>
+        <div class="card border-0 shadow-sm h-100 p-4 hover-card">
+          <div class="mb-3 display-5 text-success">📊</div>
+          <h3 class="fw-bold text-dark">Organizado</h3>
+          <p class="text-muted">
+            Toda la información centralizada, con reportes claros y fáciles de entender.
+          </p>
         </div>
       </div>
+
       <div class="col-md-4">
-        <div class="card p-4 h-100 shadow-sm">
-          <h3 class="fw-bold text-danger">🔒 Seguro</h3>
-          <p class="opacity-75">Tus datos siempre protegidos con la mejor seguridad.</p>
+        <div class="card border-0 shadow-sm h-100 p-4 hover-card">
+          <div class="mb-3 display-5 text-danger">🔒</div>
+          <h3 class="fw-bold text-dark">Seguro</h3>
+          <p class="text-muted">
+            Tus datos y pedidos protegidos con las mejores prácticas de seguridad.
+          </p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
+<!-- Sección CTA final -->
 <section class="py-5 text-center bg-primary text-white">
   <div class="container">
-    <h2 class="fw-bold">Empieza a gestionar mejor tus pedidos hoy</h2>
-    <p class="mb-4">Interfaz moderna, adaptable y simple</p>
-    <a href="#" class="btn btn-light btn-lg">Crear pedido</a>
+    <h2 class="fw-bold mb-3">Empieza a gestionar tus pedidos hoy mismo</h2>
+    <p class="mb-4 text-light opacity-75">Una plataforma moderna, adaptable y simple de usar.</p>
+    <a href="{% url 'Contacto' %}" class="btn btn-light btn-lg shadow-sm px-5">
+      Contáctanos
+    </a>
   </div>
 </section>
+
+<!-- Estilos adicionales -->
+<style>
+  /* Animaciones suaves */
+  .animate-fade {
+    animation: fadeIn 1s ease-out;
+  }
+  .animate-fade-delay {
+    animation: fadeIn 1.4s ease-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Hover de las cards */
+  .hover-card {
+    transition: all 0.3s ease;
+  }
+  .hover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.1) !important;
+  }
+</style>
+
 {% endblock %}

@@ -1,56 +1,62 @@
-<table class="table table-bordered" style="color: black;">
+<div class="card shadow-lg border-0">
+  <div class="card-header bg-primary text-white text-center fw-bold">
+    Carrito de Compras
+  </div>
 
-    <thead>
-        <tr>
-            <th colspan="3" class="text-center">
-                Carro compras
-            </th>
+  <div class="card-body p-0">
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr class="text-center">
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Subtotal</th>
         </tr>
-        
-        <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Suma</th>
-        </tr>
-    </thead>
+      </thead>
 
-    <tbody>
+      <tbody>
         {% if request.session.carro.items %}
-            {% for key, value in request.session.carro.items %}
-                <tr class="text-center">
-                    <td>{{value.nombre}}</td>
-                    <td>{{value.cantidad}}</td>
-                    <td>
-                        <a href="{% url 'carro:agregar' value.producto_id %}" class="btn btn-sm btn-success">+</a>
-                        <a href="{% url 'carro:restar' value.producto_id %}" class="btn btn-sm btn-success">-</a><br>
-                        {{value.precio}} $
-                    </td>
-                </tr>
-            {% endfor%}
+          {% for key, value in request.session.carro.items %}
+          <tr class="text-center">
+            <td class="fw-semibold">{{ value.nombre }}</td>
+            <td>
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <a href="{% url 'carro:restar' value.producto_id %}" class="btn btn-sm btn-outline-danger">−</a>
+                <span class="fw-bold">{{ value.cantidad }}</span>
+                <a href="{% url 'carro:agregar' value.producto_id %}" class="btn btn-sm btn-outline-success">+</a>
+              </div>
+            </td>
+            <td class="fw-semibold">{{ value.precio }} $</td>
+          </tr>
+          {% endfor %}
         {% else %}
-            <tr>
-                <td colspan="3">
-                    <div class="alert alert-danger text-center">
-                        Sin productos
-                    </div>
-                </td>
-            </tr>
-        {% endif %}
-    </tbody>
-
-    <tfoot>
-        <tr>
+          <tr>
             <td colspan="3">
-                Total: {{importe_total_carro}} $
+              <div class="alert alert-warning text-center my-3">
+                Tu carrito está vacío
+              </div>
             </td>
-        </tr>
-        {% if request.session.carro.items %}
-        <tr>
-            <td colspan="3" style="text-align: center;">
-                <a href="../pedidos" class="btn btn-success">Hacer Pedido</a>
-            </td>
-        </tr>
+          </tr>
         {% endif %}
-    </tfoot>
+      </tbody>
 
-</table>
+      {% if request.session.carro.items %}
+      <tfoot class="table-light">
+        <tr>
+          <td colspan="3" class="text-end pe-4">
+            <span class="fw-bold fs-5">Total:</span>
+            <span class="fw-bold text-success fs-5">{{ importe_total_carro }} $</span>
+          </td>
+        </tr>
+      </tfoot>
+      {% endif %}
+    </table>
+  </div>
+
+  {% if request.session.carro.items %}
+  <div class="card-footer text-center bg-light">
+    <a href="../pedidos" class="btn btn-lg btn-primary shadow-sm">
+      Confirmar Pedido
+    </a>
+  </div>
+  {% endif %}
+</div>

@@ -1,26 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
 {% extends "SistemaPedidosWebApp/base.html" %}
-
 {% load static %}
+{% load form_tags %}
 
 {% block content %}
-<body>
-    <div>
-        {% if "valido" in request.GET %}
-            <p>Informacion enviada correctamente, gracias</p>
-        {% endif %}
-        <form action="" method="POST" style="text-align: center;">
-            {% csrf_token %}
-            <table style="margin: 20px auto;">{{miFormulario.as_table}}</table>
-            <input type="submit" value="Enviar" style="width: 150px;">
-        </form>
+<div class="container py-5">
+  <!-- Mensaje de éxito -->
+  {% if "valido" in request.GET %}
+  <div class="alert alert-success text-center w-75 mx-auto mb-5 shadow-sm">
+    ✅ Información enviada correctamente, ¡gracias por contactarnos!
+  </div>
+  {% endif %}
+
+  <!-- Card del formulario -->
+  <div class="card mx-auto shadow-lg border-0" style="max-width: 600px;">
+    <div class="card-header bg-primary text-white text-center fw-bold">
+        Contáctanos
     </div>
-</body>
-{% endblock%}
-</html>
+
+    <div class="card-body p-4">
+      <form action="" method="POST" novalidate>
+        {% csrf_token %}
+
+        <!-- Renderización de campos manual (más control de estilo) -->
+        <div class="mb-3">
+          <label for="id_nombre" class="form-label fw-semibold">Nombre</label>
+          {{ miFormulario.nombre|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-3">
+          <label for="id_email" class="form-label fw-semibold">Correo electrónico</label>
+          {{ miFormulario.email|add_class:"form-control" }}
+        </div>
+
+        <div class="mb-3">
+          <label for="id_contenido" class="form-label fw-semibold">Mensaje</label>
+          {{ miFormulario.contenido|add_class:"form-control" }}
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm">
+            Enviar mensaje
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos extra -->
+<style>
+  .card {
+    border-radius: 1rem;
+  }
+  .form-control:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  }
+</style>
+{% endblock %}
