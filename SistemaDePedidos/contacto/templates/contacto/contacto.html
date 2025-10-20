@@ -21,7 +21,7 @@
       <form action="" method="POST" novalidate>
         {% csrf_token %}
 
-        <!-- Renderización de campos manual (más control de estilo) -->
+        <!-- Renderización de campos manual -->
         <div class="mb-3">
           <label for="id_nombre" class="form-label fw-semibold">Nombre</label>
           {{ miFormulario.nombre|add_class:"form-control" }}

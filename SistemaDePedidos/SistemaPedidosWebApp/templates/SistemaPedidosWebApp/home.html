@@ -6,25 +6,21 @@
 {% block content %}
 
 <!-- Hero principal -->
-<section class="text-center py-5 bg-light position-relative overflow-hidden">
-  <div class="container position-relative">
-    <h1 class="fw-bold display-4 text-primary mb-3 animate-fade">
+<section class="hero text-center d-flex align-items-center justify-content-center position-relative overflow-hidden">
+  <div class="container position-relative z-1">
+    <h1 class="fw-bold display-4 text-white mb-3 animate-fade">
       Gestión de Pedidos
     </h1>
-    <p class="lead text-muted mb-4 animate-fade-delay">
+    <p class="lead text-light mb-4 animate-fade-delay">
       Organiza, controla y entrega con máxima eficiencia 🚚
     </p>
-    <a href="{% url 'Tienda' %}" class="btn btn-primary btn-lg shadow-sm px-5 animate-fade-delay">
+    <a href="{% url 'Tienda' %}" class="btn btn-warning btn-lg shadow-sm px-5 animate-fade-delay">
       Comenzar ahora
     </a>
   </div>
 
-  <!-- Fondo decorativo -->
-<div class="position-absolute top-0 start-0 w-100 h-100"
-     style="background: radial-gradient(circle at 70% 30%, rgba(13,110,253,.1), transparent 70%);
-            pointer-events: none;">
-</div>
-
+  <!-- Imagen de fondo -->
+  <div class="hero-bg position-absolute top-0 start-0 w-100 h-100"></div>
 </section>
 
 <!-- Sección de características -->
@@ -65,38 +61,16 @@
 </section>
 
 <!-- Sección CTA final -->
-<section class="py-5 text-center bg-primary text-white">
+<section class="py-5 text-center bg-dark text-white">
   <div class="container">
     <h2 class="fw-bold mb-3">Empieza a gestionar tus pedidos hoy mismo</h2>
-    <p class="mb-4 text-light opacity-75">Una plataforma moderna, adaptable y simple de usar.</p>
+    <p class="mb-4 text-light opacity-75">
+      Una plataforma moderna, adaptable y simple de usar.
+    </p>
     <a href="{% url 'Contacto' %}" class="btn btn-light btn-lg shadow-sm px-5">
       Contáctanos
     </a>
   </div>
 </section>
-
-<!-- Estilos adicionales -->
-<style>
-  /* Animaciones suaves */
-  .animate-fade {
-    animation: fadeIn 1s ease-out;
-  }
-  .animate-fade-delay {
-    animation: fadeIn 1.4s ease-out;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Hover de las cards */
-  .hover-card {
-    transition: all 0.3s ease;
-  }
-  .hover-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.1) !important;
-  }
-</style>
 
 {% endblock %}

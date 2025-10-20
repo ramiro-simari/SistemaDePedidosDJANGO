@@ -1,0 +1,126 @@
+/* NAVBAR */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.navbar {
+  background: linear-gradient(90deg, #000000, #5f5c5c);
+  padding: 0.75rem 1rem;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  color: #f8f9fa !important;
+  transition: color 0.2s ease;
+  margin: 0 0.4rem;
+}
+
+.nav-link:hover {
+  color: #ffc107 !important;
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+.card {
+  border: none;
+  border-radius: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* BOTONES LOGIN / REGISTRO */
+.btn-outline-light {
+  border-color: #aaa !important;
+  color: #eee !important;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ddd, #aaa);
+  border: none;
+  color: #000 !important;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #fff, #bbb);
+}
+
+/* --- HERO --- */
+.hero {
+  min-height: 90vh;
+  color: #fff;
+  position: relative;
+}
+
+.hero-bg {
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("https://images.pexels.com/photos/4484076/pexels-photo-4484076.jpeg?auto=compress&cs=tinysrgb&w=1920")
+    center/cover no-repeat;
+  z-index: 0;
+}
+
+/* --- Animaciones --- */
+.animate-fade {
+  animation: fadeIn 1s ease-out;
+}
+
+.animate-fade-delay {
+  animation: fadeIn 1.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- Hover cards --- */
+.hover-card {
+  transition: all 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 0.8rem 1.2rem rgba(0, 0, 0, 0.2) !important;
+}
+
+/* --- Responsivo --- */
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+}
+
+/* FOOTER */
+footer {
+  background-color: #1e2022;
+  color: #fff;
+}
