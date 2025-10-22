@@ -88,10 +88,10 @@ WSGI_APPLICATION = 'SistemaDePedidos.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'articulosclientes',
+        'NAME': 'articulosclientes_utf8',
         'USER': 'postgres',
         'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'DATABASE_PORT': '5432',
     }
 }
