@@ -1,0 +1,223 @@
+
+/* ESTILOS PLANTILLA BASE */
+
+/* Header Top */
+.header_top .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.navbar-brand img {
+    height: 80px;              
+    width: auto;               
+    max-width: 100%;           
+    object-fit: contain;
+    transition: transform 0.3s ease;        
+}
+
+.navbar {
+    padding-top: 0.7rem !important;
+    padding-bottom: 0.7rem !important;
+}
+
+.header_top {
+    position: relative;
+    z-index: 1031;
+}
+
+    .header_top .form-control::placeholder {
+    color: #aaa;
+}
+
+    .header_top .btn-outline-light:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+    @media (max-width: 768px) {
+    .header_top img {
+    height: 60px;
+}
+    .header_top form {
+    width: 100%;
+    }
+}
+
+/* Barra de Busqueda */
+.search-bar {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  max-width: 600px;
+  width: 100%;
+  justify-content: center;
+}
+
+/* Campo de Busqueda */
+.search-input {
+    background-color: #1c1c1c;
+    border: 1px solid #444;
+    border-radius: 50px 0 0 50px;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-input::placeholder {
+    color: #aaa;
+}
+
+/* Efecto al interactuar*/
+.search-input:focus {
+    border-color: #4e00cc;
+    box-shadow: 0 0 8px rgb(132, 0, 255);
+    outline: none;
+}
+
+/* Boton */
+.search-btn {
+    border-radius: 0 50px 50px 0;
+    border: 1px solid #4e00cc;
+    background-color: #4e00cc;
+    color: #ffffff;
+    padding: 0.6rem 1.2rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.search-btn:hover {
+    background-color: #5701e2;
+    border-color: #5701e2;
+    transform: scale(1.05);
+}
+
+/* Ajustes responsive */
+@media (max-width: 576px) {
+  .search-bar {
+    max-width: 100%;
+  }
+
+  .search-input,
+  .search-btn {
+    border-radius: 50px;
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .search-bar {
+    flex-direction: column;
+  }
+}
+
+/* Botones Login / Registro */
+.auth-buttons a {
+    font-size: medium;
+    font-weight: 600;
+    border-radius: 30px;
+    padding: 0.4rem 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Login */
+.login-btn {
+    border: 1px solid #ccc;
+    color: #fff;
+    background-color: transparent;
+}
+
+.login-btn:hover {
+    background-color: #4e00cc;
+    border-color: #4e00cc;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Registro */
+.register-btn {
+    border: none;
+    background: linear-gradient(135deg, #4e00cc, #8a2be2);
+    color: #fff !important;
+    box-shadow: 0 0 8px rgba(132, 0, 255, 0.5);
+}
+
+.register-btn:hover {
+    background: linear-gradient(135deg, #5701e2, #a24df0);
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 0 12px rgba(132, 0, 255, 0.8);
+}
+
+/* Logout */
+.logout-btn {
+    border: 1px solid #ccc;
+    color: #fff;
+    background-color: transparent;
+}
+
+.logout-btn:hover {
+    background-color: #d9534f;
+    border-color: #d9534f;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Saludo al usuario */
+.auth-buttons span {
+    font-weight: 500;
+    color: #ddd;
+}
+
+/* Nav Links */
+.navbar-nav .nav-link {
+    color: #ddd !important;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Linea violeta animada debajo */
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60%;
+    height: 3px;
+    background-color: #4e00cc;
+    transition: transform 0.3s ease;
+    transform-origin: center;
+}
+
+/* Hover y activo */
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: #fff !important;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* Espaciado entre links */
+.navbar-nav .nav-item {
+  margin: 0 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .navbar-nav {
+    gap: 0.5rem;
+  }
+
+  .navbar-nav .nav-link::after {
+    display: none;
+  }
+}

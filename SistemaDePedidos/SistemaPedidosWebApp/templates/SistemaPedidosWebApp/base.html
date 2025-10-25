@@ -4,159 +4,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}Gestión de Pedidos{% endblock %}</title>
+  <title>{% block title %}Fenrir PC{% endblock %}</title>
 
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- Link CSS -->
-  <link href="{% static 'SistemaPedidosWebApp/css/gestion.css' %}" rel="stylesheet">
+  <!-- CSS personalizado -->
+  <link href="{% static 'SistemaPedidosWebApp/css/styles.css' %}" rel="stylesheet">
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-main: #0e0e0e;
-      --bg-card: #1b1b1b;
-      --text-main: #f5f5f5;
-      --text-secondary: #bdbdbd;
-      --accent: #888;
-    }
-
-    body {
-      background: var(--bg-main);
-      color: var(--text-main);
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* NAVBAR */
-    .navbar {
-      background: linear-gradient(135deg, #000, #1a1a1a);
-      padding: 0.8rem 0;
-      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5);
-    }
-
-    .navbar-brand {
-      color: #fff !important;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      font-size: 1.2rem;
-    }
-
-    .nav-link {
-      color: var(--text-secondary) !important;
-      transition: 0.3s;
-    }
-
-    .nav-link:hover {
-      color: #fff !important;
-      transform: scale(1.05);
-    }
-
-    /* BOTONES LOGIN / REGISTRO */
-    .btn-outline-light {
-      border-color: #aaa !important;
-      color: #eee !important;
-    }
-
-    .btn-outline-light:hover {
-      background-color: #fff !important;
-      color: #000 !important;
-    }
-
-    .btn-warning {
-      background: linear-gradient(135deg, #ddd, #aaa);
-      border: none;
-      color: #000 !important;
-    }
-
-    .btn-warning:hover {
-      background: linear-gradient(135deg, #fff, #bbb);
-    }
-
-    /* FOOTER */
-    footer {
-      background: linear-gradient(135deg, #111, #1b1b1b);
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      letter-spacing: 0.5px;
-      border-top: 1px solid #222;
-      margin-top: auto;
-    }
-
-    footer p {
-      margin: 0;
-      color: #bbb;
-    }
-
-    /* CONTENIDO */
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 992px) {
-      .navbar-nav {
-        background: #111;
-        border-radius: 12px;
-        padding: 10px 0;
-        margin-top: 10px;
-      }
-      .nav-link {
-        padding: 8px 0;
-      }
-      .d-flex.align-items-center {
-        justify-content: center;
-        margin-top: 10px;
-      }
-    }
-  </style>
+  
 </head>
 
-<body class="d-flex flex-column min-vh-100">
+<body class="d-flex flex-column min-vh-100 bg-dark text-light">
+
+  <!-- HEADER TOP -->
+  <div class="header_top bg-black py-2">
+    <div class="container d-flex flex-column flex-lg-row align-items-center justify-content-between gap-3">
+
+      <!-- LOGO -->
+      <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'Home' %}">
+        <img src="{% static 'SistemaPedidosWebApp/img/logo3.png' %}" alt="Logo">
+      </a>
+        
+      <!-- BARRA DE BUSQUEDA -->
+      <form class="search-bar d-flex flex-grow-1 mx-lg-4" role="search" action="{% url 'Tienda' %}" method="GET">
+        <input class="form-control search-input"
+               type="search"
+               name="q"
+               placeholder="Buscar productos..."
+               aria-label="Buscar">
+        <button class="btn search-btn" type="submit">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+      </form>
+
+      <!-- BOTONES LOGIN Y REGISTRO -->
+      <div class="auth-buttons d-flex align-items-center gap-2 ms-lg-auto mt-3 mt-lg-0">
+        {% if user.is_authenticated %}
+          <span class="fw-medium text-light">Hola {{ user.username }}</span>
+          <a href="{% url 'cerrar_sesion' %}" class="logout-btn btn btn-sm btn-outline-light">Cerrar sesión</a>
+        {% else %}
+          <a href="{% url 'logear' %}" class="login-btn btn btn-sm btn-outline-light">Login</a>
+          <a href="{% url 'Autenticacion' %}" class="register-btn btn btn-sm btn-warning text-dark">Registrate</a>
+        {% endif %}
+      </div>
+      
+    </div>
+  </div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
-    <div class="container">
-      <!-- IZQUIERDA: Marca -->
-      <a class="navbar-brand fw-bold" href="{% url 'Home' %}">
-        Gestión de Pedidos
-      </a>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm">
+    <div class="container d-flex align-items-center justify-content-between">
 
-      <!-- Botón toggle para móviles -->
+      <!-- BOTÓN TOGGLE (MÓVIL) -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
         aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
       <!-- CONTENIDO -->
-      <div class="collapse navbar-collapse" id="navbarContent">
+      <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
 
         <!-- CENTRO: Links -->
         <ul class="navbar-nav mx-auto mb-2 mb-lg-0 text-center">
-          <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'Home' %}">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'Servicios' %}">Servicios</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'Tienda' %}">Tienda</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'Contacto' %}">Contacto</a></li>
-          <li class="nav-item"><a class="nav-link fw-semibold" href="{% url 'Blog' %}">Blog</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold px-3" href="{% url 'Home' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold px-3" href="{% url 'Servicios' %}">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold px-3" href="{% url 'Tienda' %}">Tienda</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold px-3" href="{% url 'Contacto' %}">Contacto</a></li>
+          <li class="nav-item"><a class="nav-link fw-semibold px-3" href="{% url 'Blog' %}">Blog</a></li>
         </ul>
 
-        <!-- DERECHA: Usuario -->
-        <div class="d-flex align-items-center text-white gap-2">
-          {% if user.is_authenticated %}
-            <span class="fw-medium">Hola {{ user.username }}</span>
-            <a href="{% url 'cerrar_sesion' %}" class="btn btn-sm btn-outline-light">Cerrar sesión</a>
-          {% else %}
-            <a href="{% url 'logear' %}" class="btn btn-sm btn-outline-light">Login</a>
-            <a href="{% url 'Autenticacion' %}" class="btn btn-sm btn-warning text-dark">Registrate</a>
-          {% endif %}
-        </div>
       </div>
     </div>
   </nav>
@@ -168,11 +87,12 @@
 
   <!-- Footer -->
   <footer class="text-center py-3 mt-auto">
-    <p class="mb-0">&copy; {{ year|default:2025 }} Gestión de Pedidos</p>
+    <p class="mb-0">&copy; {{ year|default:2025 }} Fenrir Hardware</p>
   </footer>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
+  <script src="https://kit.fontawesome.com/c2ec05f9f8.js" crossorigin="anonymous"></script>
 </body>
 </html>
