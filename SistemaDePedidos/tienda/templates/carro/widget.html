@@ -1,11 +1,11 @@
-<div class="card shadow-lg border-0">
-  <div class="card-header bg-primary text-white text-center fw-bold">
-    Carrito de Compras
+<div class="card carrito-widget border-0 shadow-lg">
+  <div class="card-header text-center fw-bold carrito-header">
+    🛒 Carrito de Compras
   </div>
 
   <div class="card-body p-0">
-    <table class="table align-middle mb-0">
-      <thead class="table-light">
+    <table class="table mb-0 align-middle text-light">
+      <thead class="carrito-thead">
         <tr class="text-center">
           <th>Producto</th>
           <th>Cantidad</th>
@@ -16,22 +16,29 @@
       <tbody>
         {% if request.session.carro.items %}
           {% for key, value in request.session.carro.items %}
-          <tr class="text-center">
-            <td class="fw-semibold">{{ value.nombre }}</td>
-            <td>
-              <div class="d-flex justify-content-center align-items-center gap-2">
-                <a href="{% url 'carro:restar' value.producto_id %}" class="btn btn-sm btn-outline-danger">−</a>
-                <span class="fw-bold">{{ value.cantidad }}</span>
-                <a href="{% url 'carro:agregar' value.producto_id %}" class="btn btn-sm btn-outline-success">+</a>
+          <tr class="text-center align-middle">
+            <td class="fw-semibold">
+              <div class="d-flex align-items-center justify-content-start gap-2">
+                {% if value.imagen %}
+                  <img src="{{ value.imagen }}" alt="{{ value.nombre }}" class="carrito-img">
+                {% endif %}
+                <span>{{ value.nombre }}</span>
               </div>
             </td>
-            <td class="fw-semibold">{{ value.precio }} $</td>
+            <td>
+              <div class="d-flex justify-content-center align-items-center gap-2">
+                <a href="{% url 'carro:restar' value.producto_id %}" class="btn-cantidad btn-restar">−</a>
+                <span class="fw-bold">{{ value.cantidad }}</span>
+                <a href="{% url 'carro:agregar' value.producto_id %}" class="btn-cantidad btn-sumar">+</a>
+              </div>
+            </td>
+            <td class="fw-semibold text-success">{{ value.precio }} $</td>
           </tr>
           {% endfor %}
         {% else %}
           <tr>
             <td colspan="3">
-              <div class="alert alert-warning text-center my-3">
+              <div class="alert alert-dark text-center my-3 border border-secondary text-light">
                 Tu carrito está vacío
               </div>
             </td>
@@ -40,10 +47,10 @@
       </tbody>
 
       {% if request.session.carro.items %}
-      <tfoot class="table-light">
+      <tfoot>
         <tr>
           <td colspan="3" class="text-end pe-4">
-            <span class="fw-bold fs-5">Total:</span>
+            <span class="fw-bold text-light fs-5">Total:</span>
             <span class="fw-bold text-success fs-5">{{ importe_total_carro }} $</span>
           </td>
         </tr>
@@ -53,10 +60,143 @@
   </div>
 
   {% if request.session.carro.items %}
-  <div class="card-footer text-center bg-light">
-    <a href="../pedidos" class="btn btn-lg btn-primary shadow-sm">
-      Confirmar Pedido
-    </a>
+  <div class="card-footer text-center carrito-footer">
+    <a href="../pedidos" class="btn-confirmar">Confirmar Pedido</a>
   </div>
   {% endif %}
 </div>
+
+<style>
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.carrito-widget {
+  background: linear-gradient(180deg, #111, #1b1b1b);
+  border-radius: 12px;
+  border: 1px solid #333;
+  color: #f5f5f5;
+  overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.carrito-header {
+  background: linear-gradient(135deg, #3b0ca3, #6f42c1);
+  color: #fff;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+/* ===== TABLA ===== */
+.carrito-thead {
+  background-color: #222;
+  color: #b47aff;
+  border-bottom: 2px solid #4e00cc;
+}
+
+.table {
+  table-layout: fixed;
+  width: 100%;
+  word-wrap: break-word;
+}
+
+.table td,
+.table th {
+  border-color: #2d2d2d !important;
+  vertical-align: middle;
+}
+
+tbody tr:hover td {
+  background-color: #1a1a1a;
+}
+
+/* ===== CELDA PRODUCTO ===== */
+.table td:first-child {
+  max-width: 180px;
+  word-break: break-word;
+  white-space: normal; /* permite que el texto salte de línea */
+}
+
+.table td .d-flex {
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.table td span {
+  display: block;
+  line-height: 1.2;
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+}
+
+/* ===== AJUSTE DE BODY ===== */
+.card-body {
+  overflow-x: hidden;
+}
+
+/* ===== IMAGEN DEL PRODUCTO ===== */
+.carrito-img {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #4e00cc50;
+  box-shadow: 0 0 6px rgba(78, 0, 204, 0.2);
+  flex-shrink: 0;
+}
+
+/* ===== BOTONES DE CANTIDAD ===== */
+.btn-cantidad {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  line-height: 26px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  font-size: 1.1rem;
+  color: #fff;
+  border: none;
+}
+
+.btn-restar {
+  background-color: #dc3545;
+}
+.btn-restar:hover {
+  background-color: #b02a37;
+}
+
+.btn-sumar {
+  background-color: #198754;
+}
+.btn-sumar:hover {
+  background-color: #157347;
+}
+
+/* ===== FOOTER ===== */
+.carrito-footer {
+  background-color: #111;
+  padding: 1rem;
+  border-top: 1px solid #333;
+}
+
+.btn-confirmar {
+  display: inline-block;
+  background: linear-gradient(135deg, #4e00cc, #8a2be2);
+  color: #fff;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(132, 0, 255, 0.4);
+}
+
+.btn-confirmar:hover {
+  background: linear-gradient(135deg, #5701e2, #a24df0);
+  box-shadow: 0 0 12px rgba(132, 0, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+
+</style>

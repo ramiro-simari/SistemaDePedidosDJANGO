@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +17,7 @@
   
 </head>
 
-<body class="d-flex flex-column min-vh-100 bg-dark text-light">
+<body class="d-flex flex-column min-vh-100 text-light" style="background-color: rgb(27, 27, 27);">
 
   <!-- HEADER TOP -->
   <div class="header_top bg-black py-2">
@@ -55,7 +55,7 @@
   </div>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="background-color: rgb(8, 8, 8);">
     <div class="container d-flex align-items-center justify-content-between">
 
       <!-- BOTÓN TOGGLE (MÓVIL) -->
@@ -86,7 +86,7 @@
   </main>
 
   <!-- Footer -->
-  <footer class="text-center py-3 mt-auto">
+  <footer class="text-center py-3 mt-auto bg-black">
     <p class="mb-0">&copy; {{ year|default:2025 }} Fenrir Hardware</p>
   </footer>
 

@@ -4,32 +4,206 @@
 {% block title %}Servicios - Gestión de Pedidos{% endblock %}
 
 {% block content %}
-<section class="py-5">
+<section class="py-5 servicios-section">
   <div class="container">
     <h1 class="fw-bold text-center mb-5">Nuestros Servicios</h1>
 
-    <div class="row g-4">
+    <div class="row g-5">
       {% for servicio in servicios %}
-      <div class="col-12">
-        <div class="card shadow-sm border-0 rounded-3 overflow-hidden">
-          <div class="row g-0 align-items-center">
-            <!-- Imagen -->
-            <div class="col-md-4">
-              <img src="{{ servicio.imagen.url }}" class="img-fluid w-100 h-100 object-fit-cover" alt="{{ servicio.titulo }}">
-            </div>
-            <!-- Contenido -->
-            <div class="col-md-8">
-              <div class="card-body p-4">
-                <h3 class="card-title fw-bold">{{ servicio.titulo }}</h3>
-                <p class="card-text text-muted">{{ servicio.contenido }}</p>
-                <a href="#" class="btn btn-primary mt-2">Más información</a>
+        <div class="col-12">
+          <div class="card servicio-card shadow-sm border-0 overflow-hidden {% cycle 'from-left' 'from-right' %}">
+            <div class="row g-0 align-items-center {% cycle '' 'flex-row-reverse' %}">
+              
+              <!-- Imagen -->
+              <div class="col-md-6 servicio-img-container">
+                <img src="{{ servicio.imagen.url }}" class="img-fluid w-100 h-100 object-fit-cover" alt="{{ servicio.titulo }}">
               </div>
+
+              <!-- Contenido -->
+              <div class="col-md-6 d-flex align-items-center">
+                <div class="card-body p-4 p-md-5">
+                  <h3 class="card-title fw-bold">{{ servicio.titulo }}</h3>
+                  <p class="card-text text-muted">{{ servicio.contenido|truncatewords:25 }}</p>
+                  <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalServicio{{ forloop.counter }}">
+                    Más información
+                  </button>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
-      </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modalServicio{{ forloop.counter }}" tabindex="-1" aria-labelledby="modalLabel{{ forloop.counter }}" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content bg-dark text-light border-0">
+              
+              <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold" id="modalLabel{{ forloop.counter }}">{{ servicio.titulo }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+              </div>
+              
+              <div class="modal-body">
+                <img src="{{ servicio.imagen.url }}" class="img-fluid rounded mb-3 shadow" alt="{{ servicio.titulo }}">
+                <p class="fs-6 text-light">{{ servicio.contenido }}</p>
+              </div>
+
+              <div class="modal-footer border-secondary">
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
       {% endfor %}
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".servicio-card");
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+
+  cards.forEach(card => observer.observe(card));
+});
+</script>
+
+<style>
+/* === SECCIÓN === */
+.servicios-section {
+  background: radial-gradient(circle at top, #1a1a1d, #0f0f11);
+  color: #f1f1f1;
+  min-height: 100vh;
+}
+
+h1 {
+  color: #8a2be2;
+  letter-spacing: 0.5px;
+  font-size: 2.5rem;
+  position: relative;
+  display: inline-block;
+}
+h1::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -10px;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #4e00cc, #8a2be2);
+  border-radius: 5px;
+}
+
+/* === CARD === */
+.servicio-card {
+  background: #1c1c1e;
+  color: #ddd;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+  transform: translateY(40px);
+  opacity: 0;
+  transition: all 0.7s ease-out;
+}
+.servicio-card.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+.servicio-card:hover {
+  transform: translateY(-8px) scale(1.01);
+  box-shadow: 0 0 25px rgba(138, 43, 226, 0.3);
+}
+
+/* === ANIMACIÓN LATERAL === */
+.servicio-card.from-left {
+  transform: translateX(-80px);
+  opacity: 0;
+}
+.servicio-card.from-right {
+  transform: translateX(80px);
+  opacity: 0;
+}
+.servicio-card.visible.from-left,
+.servicio-card.visible.from-right {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+/* === IMAGEN === */
+.servicio-img-container {
+  overflow: hidden;
+}
+.servicio-img-container img {
+  transition: transform 0.6s ease;
+  height: 100%;
+  object-fit: cover;
+}
+.servicio-card:hover img {
+  transform: scale(1.1);
+}
+
+/* === TEXTO === */
+.card-body {
+  padding: 2rem;
+}
+.card-title {
+  color: #fff;
+  font-size: 1.7rem;
+  margin-bottom: 0.75rem;
+}
+.card-text {
+  color: #bfbfbf;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* === BOTÓN === */
+.btn-primary {
+  background: linear-gradient(135deg, #4e00cc, #8a2be2);
+  border: none;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #5f1ef5, #9b47ff);
+  box-shadow: 0 0 12px rgba(138, 43, 226, 0.5);
+  transform: translateY(-3px);
+}
+
+/* === MODAL === */
+.modal-content {
+  background: linear-gradient(180deg, #121212, #1d1d1d);
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(78, 0, 204, 0.3);
+}
+.modal-header, .modal-footer {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.modal-body img {
+  border-radius: 10px;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 767px) {
+  .card-body {
+    text-align: center;
+  }
+  .btn-primary {
+    width: 100%;
+  }
+}
+</style>
 {% endblock %}

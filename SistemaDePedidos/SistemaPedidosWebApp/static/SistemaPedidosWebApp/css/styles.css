@@ -221,3 +221,24 @@
     display: none;
   }
 }
+
+/* ESTILOS PLANTILLA HOME */
+/* estilos  tienda */
+.tienda-container{
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #202020 !important;
+}
+
+/* servicios */
+/* ==== Animaciones de entrada ==== */
+.servicio-card {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s ease-out;
+}
+
+.servicio-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
