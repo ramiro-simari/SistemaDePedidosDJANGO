@@ -1,53 +1,63 @@
 {% extends "SistemaPedidosWebApp/base.html" %}
 {% load static %}
 
-{% block title %}Posts - Gestión de Pedidos{% endblock %}
+{% block title %}Blog - Gestión de Pedidos{% endblock %}
 
 {% block content %}
-<section class="py-5 bg-light">
+<section class="py-5 bg-dark text-light">
   <div class="container">
-    <h1 class="fw-bold text-center mb-5 text-primary">Últimos Posts</h1>
+    <!-- Título -->
+    <div class="text-center mb-5">
+      <h1 class="fw-bold display-6 text-gradient">Últimos Posts</h1>
+      <p class="text-light">Novedades, consejos y actualizaciones sobre nuestra plataforma</p>
+    </div>
 
-    <section>
-      <div style="width: 75%; margin: auto; text-align: center; color: blue;">
-
-        Categorias:
+    <!-- Categorías -->
+    <div class="mb-5 text-center">
+      <h6 class="text-uppercase text-secondary mb-3">Categorías</h6>
+      <div class="d-flex flex-wrap justify-content-center gap-2">
         {% for post in posts %}
-
           {% for categoria in post.categorias.all %}
-
-            <a href="{% url 'categoria' categoria.id %}">{{categoria.nombre}}</a>
-
+            <a href="{% url 'categoria' categoria.id %}" 
+               class="categoria-badge px-3 py-1 rounded-pill">
+              {{ categoria.nombre }}
+            </a>
           {% endfor %}
-
         {% endfor %}
-        
       </div>
-    </section>
+    </div>
 
+    <!-- Posts -->
     <div class="row g-4">
       {% for post in posts %}
       <div class="col-md-6 col-lg-4">
-        <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+        <div class="card post-card h-100 border-0 shadow-sm overflow-hidden">
           
-          <!-- Imagen (solo si existe) -->
           {% if post.imagen %}
-          <img src="{{ post.imagen.url }}" class="card-img-top" alt="{{ post.titulo }}">
+          <div class="post-img-container">
+            <img src="{{ post.imagen.url }}" class="card-img-top post-img" alt="{{ post.titulo }}">
+          </div>
           {% endif %}
 
-          <!-- Contenido -->
-          <div class="card-body d-flex flex-column">
-            <h5 class="card-title fw-bold text-dark">{{ post.titulo }}</h5>
-            <p class="card-text text-muted small flex-grow-1">
-              {{ post.contenido|truncatewords:20 }}
+          <div class="card-body d-flex flex-column p-4">
+            <h5 class="card-title fw-bold text-light mb-2">{{ post.titulo }}</h5>
+            <p class="card-text text-light small flex-grow-1">
+              {{ post.contenido|truncatewords:25 }}
             </p>
-            <a href="#" class="btn btn-sm btn-primary mt-2 align-self-start">Leer más</a>
+            <button 
+              class="btn btn-ver-mas mt-2 align-self-start" 
+              data-bs-toggle="modal" 
+              data-bs-target="#postModal"
+              data-title="{{ post.titulo }}"
+              data-content="{{ post.contenido|escapejs }}"
+              data-image="{% if post.imagen %}{{ post.imagen.url }}{% endif %}">
+              Leer más
+            </button>
           </div>
 
-          <!-- Footer con fecha -->
-          <div class="card-footer bg-white border-0 text-muted small">
-            <i class="bi bi-calendar3"></i>
-            Publicado el {{ post.created|date:"d/m/Y H:i" }}
+          <div class="card-footer border-0 text-secondary small bg-dark-light">
+            <i class="bi bi-calendar3 me-1"></i>
+            {{ post.created|date:"d/m/Y H:i" }}
           </div>
         </div>
       </div>
@@ -55,4 +65,77 @@
     </div>
   </div>
 </section>
+
+{% include "SistemaPedidosWebApp/partials/_post_modal.html" %}
+
+<!-- 🎨 Estilos -->
+<style>
+  .text-gradient {
+    background: linear-gradient(135deg, #6f42c1, #b47aff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .categoria-badge {
+    background-color: #1f1f1f;
+    color: #b47aff;
+    border: 1px solid #4e00cc50;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+
+  .categoria-badge:hover {
+    background: linear-gradient(135deg, #6f42c1, #b47aff);
+    color: #fff;
+    box-shadow: 0 0 10px rgba(180, 122, 255, 0.5);
+    text-decoration: none;
+  }
+
+  .post-card {
+    background: linear-gradient(180deg, #1a1a1a, #111);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .post-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 20px rgba(180, 122, 255, 0.15);
+  }
+
+  .post-img-container {
+    overflow: hidden;
+    height: 200px;
+  }
+
+  .post-img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.4s ease;
+  }
+
+  .post-card:hover .post-img {
+    transform: scale(1.05);
+  }
+
+  .btn-ver-mas {
+    background: linear-gradient(135deg, #6f42c1, #b47aff);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: 50px;
+    padding: 0.5rem 1.2rem;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ver-mas:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+  }
+
+  .bg-dark-light {
+    background-color: #181818;
+  }
+</style>
 {% endblock %}

@@ -5,6 +5,7 @@ CATEGORIAS = [
     ("actualizacion", "Actualización"),
     ("consulta", "Consulta"),
     ("soporte", "Soporte técnico"),
+    ("armado", "Armado de PC"),
     ("otro", "Otro"),
 ]
 class FormularioContacto(forms.Form):

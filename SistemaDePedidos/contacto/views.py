@@ -13,10 +13,11 @@ def contacto(request):
         if formulario_contacto.is_valid():
             nombre=request.POST.get("nombre")
             email=request.POST.get("email")
+            categoria=request.POST.get('categoria')
             contenido=request.POST.get("contenido")
 
             email=EmailMessage("Mensaje desde App Django",
-            "El usuario con nombre {} con la direccion {} escribe lo siguiente:\n\n {}".format(nombre,email,contenido),
+            "El usuario con nombre {} con la direccion {} con la categoria {} escribe lo siguiente:\n\n {}".format(nombre,email,categoria,contenido),
             "",["ramirosimari26@gmail.com"], reply_to=[email])
             try:
                 email.send()

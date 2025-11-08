@@ -3,7 +3,7 @@
 {% load form_tags %}
 
 {% block content %}
-<section class="py-5 bg-dark text-light">
+<section class="py-5 bg-dark text-light color-text">
   <div class="container">
     
     {% if "valido" in request.GET %}
@@ -14,7 +14,7 @@
 
     <div class="text-center mb-5">
       <h1 class="fw-bold display-6 text-gradient">Contáctanos</h1>
-      <p class="text-muted">Seleccioná una categoría y dejanos tu mensaje.</p>
+      <p class="text-light">Seleccioná una categoría y dejanos tu mensaje.</p>
     </div>
 
     <div class="card contacto-card mx-auto border-0 shadow p-4" style="max-width: 600px;">
@@ -22,22 +22,22 @@
         <form action="" method="POST" novalidate>
           {% csrf_token %}
 
-          <div class="mb-4">
+          <div class="mb-4 campo">
             <label for="id_nombre" class="form-label fw-semibold">Nombre</label>
             {{ miFormulario.nombre|add_class:"form-control bg-dark text-light border-secondary" }}
           </div>
 
-          <div class="mb-4">
+          <div class="mb-4 campo">
             <label for="id_email" class="form-label fw-semibold">Correo electrónico</label>
             {{ miFormulario.email|add_class:"form-control bg-dark text-light border-secondary" }}
           </div>
 
-          <div class="mb-4">
+          <div class="mb-4 campo">
             <label for="id_categoria" class="form-label fw-semibold">Categoría</label>
             {{ miFormulario.categoria|add_class:"form-select bg-dark text-light border-secondary" }}
           </div>
 
-          <div class="mb-4">
+          <div class="mb-4 campo">
             <label for="id_contenido" class="form-label fw-semibold">Mensaje</label>
             {{ miFormulario.contenido|add_class:"form-control bg-dark text-light border-secondary" }}
           </div>
@@ -54,49 +54,75 @@
 </section>
 
 <style>
-  .text-gradient {
-    background: linear-gradient(135deg, #6f42c1, #b47aff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+.text-gradient {
+  background: linear-gradient(135deg, #6f42c1, #b47aff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
-  .contacto-card {
-    background: linear-gradient(180deg, #1a1a1a, #111);
-    border-radius: 1.2rem;
-    border: 1px solid #2a2a2a;
-  }
+.contacto-card {
+  background: linear-gradient(180deg, #1a1a1a, #111);
+  border-radius: 1.2rem;
+  border: 1px solid #2a2a2a;
+}
 
-  .form-control, .form-select {
-    border-radius: 0.6rem;
-    transition: all 0.3s ease;
-    font-size: 1rem;
-  }
+.form-control, .form-select {
+  border-radius: 0.6rem;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  border: 1px solid #555 !important;
+}
 
-  .form-control:focus, .form-select:focus {
-    border-color: #8a2be2;
-    box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
-  }
+.form-control:focus, .form-select:focus {
+  border-color: #8a2be2;
+  box-shadow: 0 0 0 0.25rem rgba(138, 43, 226, 0.25);
+}
 
-  .btn-enviar {
-    background: linear-gradient(135deg, #6f42c1, #b47aff);
-    border: none;
-    border-radius: 0.6rem;
-    color: #fff;
-    transition: all 0.3s ease;
-    box-shadow: 0 0 12px rgba(180, 122, 255, 0.3);
-  }
+.btn-enviar {
+  background: linear-gradient(135deg, #6f42c1, #b47aff);
+  border: none;
+  border-radius: 0.6rem;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(180, 122, 255, 0.3);
+}
 
-  .btn-enviar:hover {
-    background: linear-gradient(135deg, #8a2be2, #a970ff);
-    transform: translateY(-2px);
-    box-shadow: 0 0 18px rgba(180, 122, 255, 0.6);
-  }
+.btn-enviar:hover {
+  background: linear-gradient(135deg, #8a2be2, #a970ff);
+  transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(180, 122, 255, 0.6);
+}
 
-  .alert-success {
-    border-radius: 0.8rem;
-    background: linear-gradient(135deg, #00c853, #43a047);
-    color: #fff;
-    border: none;
-  }
+.alert-success {
+  border-radius: 0.8rem;
+  background: linear-gradient(135deg, #00c853, #43a047);
+  color: #fff;
+  border: none;
+}
+
+/* --- Texto dentro de los inputs --- */
+.form-control, 
+.form-select, 
+.form-control::placeholder, 
+.form-select option {
+  color: #fff !important;
+}
+
+textarea.form-control::placeholder {
+  color: #ccc !important;
+}
+
+/* --- Labels del formulario --- */
+.card-body label {
+  color: #ddd !important;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* --- Efecto violeta al enfocar el campo --- */
+.campo:focus-within label {
+  color: #b47aff !important;
+  text-shadow: 0 0 8px rgba(180, 122, 255, 0.5);
+}
 </style>
 {% endblock %}

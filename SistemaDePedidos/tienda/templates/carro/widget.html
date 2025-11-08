@@ -1,6 +1,8 @@
+{% load carro_tags %}
+
 <div class="card carrito-widget border-0 shadow-lg">
   <div class="card-header text-center fw-bold carrito-header">
-    🛒 Carrito de Compras
+    Carrito de Compras
   </div>
 
   <div class="card-body p-0">
@@ -22,7 +24,7 @@
                 {% if value.imagen %}
                   <img src="{{ value.imagen }}" alt="{{ value.nombre }}" class="carrito-img">
                 {% endif %}
-                <span>{{ value.nombre }}</span>
+                <span class="nombre-producto" title="{{ value.nombre }}">{{ value.nombre }}</span>
               </div>
             </td>
             <td>
@@ -34,6 +36,19 @@
             </td>
             <td class="fw-semibold text-success">{{ value.precio }} $</td>
           </tr>
+
+          {% with stock=value.producto_id|stock_disponible %}
+            {% if value.cantidad > stock %}
+            <tr>
+              <td colspan="3">
+                <div class="alert alert-danger text-center py-1 my-1 small border border-danger">
+                  ⚠ Solo quedan <strong>{{ stock }}</strong> unidades disponibles de 
+                  "<span class="text-light">{{ value.nombre }}</span>"
+                </div>
+              </td>
+            </tr>
+            {% endif %}
+          {% endwith %}
           {% endfor %}
         {% else %}
           <tr>
@@ -61,7 +76,7 @@
 
   {% if request.session.carro.items %}
   <div class="card-footer text-center carrito-footer">
-    <a href="../pedidos" class="btn-confirmar">Confirmar Pedido</a>
+    <a href="{% url 'carro:realizar_pedido' %}" class="btn-confirmar">Confirmar Pedido</a>
   </div>
   {% endif %}
 </div>
@@ -104,15 +119,19 @@
   vertical-align: middle;
 }
 
+/* ===== HOVER FILA ===== */
 tbody tr:hover td {
-  background-color: #1a1a1a;
+  background-color: #000;
+}
+
+tbody tr:hover .nombre-producto {
+  color: #fff !important;
 }
 
 /* ===== CELDA PRODUCTO ===== */
 .table td:first-child {
   max-width: 180px;
-  word-break: break-word;
-  white-space: normal; /* permite que el texto salte de línea */
+  overflow: hidden;
 }
 
 .table td .d-flex {
@@ -120,17 +139,17 @@ tbody tr:hover td {
   align-items: center;
 }
 
-.table td span {
+.nombre-producto {
   display: block;
   line-height: 1.2;
-  white-space: normal;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px;
   text-align: left;
-}
-
-/* ===== AJUSTE DE BODY ===== */
-.card-body {
-  overflow-x: hidden;
+  cursor: help;
+  color: #000; /* texto negro por defecto */
+  transition: color 0.2s ease;
 }
 
 /* ===== IMAGEN DEL PRODUCTO ===== */
@@ -197,6 +216,4 @@ tbody tr:hover td {
   box-shadow: 0 0 12px rgba(132, 0, 255, 0.8);
   transform: translateY(-2px);
 }
-
-
 </style>

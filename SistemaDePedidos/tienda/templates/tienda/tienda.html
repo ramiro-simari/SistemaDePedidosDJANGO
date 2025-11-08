@@ -2,104 +2,196 @@
 {% load static %}
 
 {% block content %}
-<div class="container py-5">
+<div class="container-fluid py-5">
 
-  <!-- Título principal -->
+  <!-- ===== TÍTULO PRINCIPAL ===== -->
   <div class="text-center mb-5">
     <h1 class="fw-bold tienda-titulo">Nuestra Tienda</h1>
     <p class="text-secondary mb-0">Explorá nuestros productos y agregá al carrito lo que más te guste</p>
   </div>
 
-  <!-- Catálogo de productos -->
-  <div class="bg-dark tienda-container">
-    <div class="row g-4">
-      {% for producto in productos %}
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <div class="card producto-card h-100 border-0 text-light">
-
-          {% if producto.imagen %}
-            <img src="{{ producto.imagen.url }}" class="card-img-top producto-img" alt="{{ producto.nombre }}">
-          {% else %}
-            <img src="{% static 'img/no-image.png' %}" class="card-img-top producto-img" alt="Sin imagen">
-          {% endif %}
-
-          <div class="card-body text-center d-flex flex-column justify-content-between">
-            <div>
-              <h5 class="card-title fw-semibold text-light">{{ producto.nombre }}</h5>
-              <p class="card-text producto-precio mb-3">{{ producto.precio }} $</p>
-            </div>
-            <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-add-cart mt-auto">
-              <i class="bi bi-cart-plus me-2"></i> Agregar al carrito
-            </a>
-          </div>
-        </div>
-      </div>
-      {% empty %}
-      <div class="col-12 text-center">
-        <div class="alert alert-info bg-dark border border-secondary text-light">
-          No hay productos disponibles por el momento.
-        </div>
-      </div>
-      {% endfor %}
+  {% if query %}
+    <div class="alert alert-dark text-center mt-3 w-75 mx-auto">
+      Mostrando resultados para: <strong>"{{ query }}"</strong>
+      {% if categoria_seleccionada %}
+        en la categoría <strong>{{ categoria_seleccionada.nombre }}</strong>
+      {% endif %}
     </div>
+  {% endif %}
+
+  <!-- ===== LAYOUT PRINCIPAL ===== -->
+  <div class="row justify-content-center">
+
+    <!-- ===== CATEGORÍAS ===== -->
+    <aside class="col-12 col-md-3 col-lg-2 mb-4">
+      <div class="filtro-categorias p-3 rounded shadow-sm">
+        <h5 class="text-light fw-bold mb-3 text-center">Categorías</h5>
+        <ul class="list-unstyled m-0">
+          <li>
+            <a href="{% url 'Tienda' %}" 
+               class="categoria-link {% if not categoria_seleccionada %}activa{% endif %}">
+              Todos los productos
+            </a>
+          </li>
+          {% for cat in categorias %}
+          <li>
+            <a href="{% url 'productos_por_categoria' cat.id %}" 
+               class="categoria-link {% if categoria_seleccionada and categoria_seleccionada.id == cat.id %}activa{% endif %}">
+              {{ cat.nombre }}
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </aside>
+
+    <!-- ===== PRODUCTOS ===== -->
+    <div class="col-12 col-md-7 col-lg-8">
+      <div class="bg-dark tienda-container p-4 rounded">
+        {% if productos %}
+          <div class="row g-4 justify-content-center">
+            {% for producto in productos %}
+              <div class="col-6 col-md-4 col-lg-3 d-flex">
+                <div class="card producto-card border-0 text-light w-100 h-100 d-flex flex-column position-relative">
+
+                  <!-- Imagen del producto -->
+                  {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="card-img-top producto-img" alt="{{ producto.nombre }}">
+                  {% else %}
+                    <img src="{% static 'img/no-image.png' %}" class="card-img-top producto-img" alt="Sin imagen">
+                  {% endif %}
+
+                  <!-- Ribbon AGOTADO -->
+                  {% if producto.stock == 0 %}
+                    <span class="ribbon agotado">AGOTADO</span>
+                  {% endif %}
+
+                  <div class="card-body text-center d-flex flex-column justify-content-between">
+                    <div>
+                      <h6 class="card-title fw-semibold text-light producto-nombre" title="{{ producto.nombre }}">
+                        {{ producto.nombre }}
+                      </h6>
+                      <p class="card-text producto-precio mb-2">{{ producto.precio }} $</p>
+                      <p class="text-muted small mb-3">Stock: {{ producto.stock }}</p>
+                    </div>
+
+                    {% if producto.stock > 0 %}
+                      <a href="{% url 'carro:agregar' producto.id %}" class="btn btn-add-cart mt-auto">
+                        <i class="bi bi-cart-plus me-2"></i> Agregar
+                      </a>
+                    {% else %}
+                      <button class="btn btn-out-stock mt-auto" disabled>
+                        <i class="bi bi-x-circle me-2"></i> Sin stock
+                      </button>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="alert alert-info text-center mt-4 bg-dark border border-secondary text-light">
+            {% if query %}
+              No se encontraron productos que coincidan con "<strong>{{ query }}</strong>".
+            {% elif categoria_seleccionada %}
+              No hay productos disponibles en la categoría <strong>{{ categoria_seleccionada.nombre }}</strong>.
+            {% else %}
+              No hay productos disponibles en este momento.
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- ===== CARRITO (DERECHA) ===== -->
+    <div class="col-12 col-md-2 col-lg-2 d-none d-md-block">
+      {% if request.user.is_authenticated %}
+        <div class="carrito-fijo">
+          {% include "carro/widget.html" %}
+        </div>
+      {% else %}
+        <div class="alert alert-warning text-center mt-5 small">
+          Iniciá sesión para ver tu carrito.
+        </div>
+      {% endif %}
+    </div>
+
   </div>
 </div>
 
-<!-- Carrito flotante -->
-{% if request.user.is_authenticated %}
-  <div class="carrito-flotante position-fixed top-50 end-0 translate-middle-y me-3">
-    {% include "carro/widget.html" %}
-  </div>
-{% else %}
-  <div class="alert alert-warning text-center w-50 mx-auto my-5">
-    Iniciá sesión para ver tu carrito
-  </div>
-{% endif %}
-
-<!-- Estilos -->
+<!-- ===== ESTILOS ===== -->
 <style>
-  /* ===== TÍTULO ===== */
   .tienda-titulo {
     color: #a24df0;
-    text-shadow: 0 0 10px rgba(132, 0, 255, 0.3);
+    text-shadow: 0 0 10px rgba(162, 77, 240, 0.3);
+  }
+
+  .filtro-categorias {
+    background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
+    border: 1px solid #333;
+  }
+
+  .categoria-link {
+    display: block;
+    color: #b47aff;
+    text-decoration: none;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+
+  .categoria-link:hover {
+    background-color: #2a2a2a;
+    color: #fff;
+  }
+
+  .categoria-link.activa {
+    background: linear-gradient(135deg, #4e00cc, #8a2be2);
+    color: #fff;
+    font-weight: 600;
+    border: 1px solid #a24df0;
   }
 
   /* ===== PRODUCTOS ===== */
   .producto-card {
     background: linear-gradient(145deg, #1a1a1a, #0f0f0f);
     border-radius: 10px;
-    border: 2px solid transparent;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: all 0.25s ease;
   }
 
-  /* Solo resalta el marco al pasar el mouse */
   .producto-card:hover {
-    border-color: #a24df0; /* tono violeta más claro e intenso */
-    box-shadow: 0 0 18px rgba(162, 77, 240, 0.7); /* brillo más notorio */
+    border: 1px solid #a24df0;
+    box-shadow: 0 0 15px rgba(162, 77, 240, 0.6);
   }
 
   .producto-img {
     border-radius: 10px 10px 0 0;
-    height: 220px;
+    height: 200px;
     object-fit: cover;
   }
 
   .producto-precio {
     color: #b47aff;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
   }
 
-  /* ===== BOTÓN “AGREGAR AL CARRITO” ===== */
+  .producto-nombre {
+    font-size: 0.95rem;
+    color: #fff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Botón agregar */
   .btn-add-cart {
     background-color: #4e00cc;
     color: #fff;
-    border: 2px solid transparent;
     border-radius: 10px;
     font-weight: 600;
-    padding: 0.55rem 1.3rem;
-    letter-spacing: 0.3px;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0.45rem 1rem;
+    transition: all 0.3s ease;
   }
 
   .btn-add-cart:hover {
@@ -107,23 +199,51 @@
     box-shadow: 0 0 10px rgba(132, 0, 255, 0.4);
   }
 
-  /* ===== CARRITO FLOTANTE ===== */
-  .carrito-flotante {
-    z-index: 1050;
-    width: 340px;
+  /* Botón sin stock */
+  .btn-out-stock {
+    background-color: #333;
+    color: #999;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.45rem 1rem;
+    opacity: 0.7;
+    cursor: not-allowed;
   }
 
-  /* ===== RESPONSIVE ===== */
+  /* Ribbon AGOTADO */
+  .ribbon.agotado {
+    position: absolute;
+    top: 10px;
+    left: -5px;
+    background: linear-gradient(135deg, #cc0000, #ff3b3b);
+    color: #fff;
+    padding: 3px 10px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    z-index: 10;
+  }
+
+  /* ===== CARRITO ===== */
+  .carrito-fijo {
+    position: sticky;
+    top: 100px;
+  }
+
   @media (max-width: 992px) {
-    .carrito-flotante {
-      position: static !important;
-      transform: none !important;
-      width: 100% !important;
-      margin: 2rem 0;
+    .filtro-categorias {
+      margin-bottom: 2rem;
+      text-align: center;
     }
 
     .producto-img {
-      height: 180px;
+      height: 160px;
+    }
+
+    .carrito-fijo {
+      position: static;
+      margin-top: 2rem;
     }
   }
 </style>

@@ -1,5 +1,5 @@
 
-/* ESTILOS PLANTILLA BASE */
+/* ==== PLANTILLA BASE ==== */
 
 /* Header Top */
 .header_top .container {
@@ -221,16 +221,15 @@
     display: none;
   }
 }
+/* ==== PLANTILLA HOME ==== */
 
-/* ESTILOS PLANTILLA HOME */
-/* estilos  tienda */
+/* ==== PLANTILLA TIENDA ==== */
 .tienda-container{
   padding: 20px;
   border-radius: 10px;
   background-color: #202020 !important;
 }
-
-/* servicios */
+/* ==== PLANTILLA SERVICIOS ==== */
 /* ==== Animaciones de entrada ==== */
 .servicio-card {
   opacity: 0;
@@ -242,3 +241,4 @@
   opacity: 1;
   transform: translateY(0);
 }
+/* ==== PLANTILLA CONTACTO ==== */

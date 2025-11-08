@@ -23,7 +23,7 @@
               <div class="col-md-6 d-flex align-items-center">
                 <div class="card-body p-4 p-md-5">
                   <h3 class="card-title fw-bold">{{ servicio.titulo }}</h3>
-                  <p class="card-text text-muted">{{ servicio.contenido|truncatewords:25 }}</p>
+                  <p class="card-text text-light">{{ servicio.contenido|truncatewords:25 }}</p>
                   <button class="btn btn-primary mt-2" data-bs-toggle="modal" data-bs-target="#modalServicio{{ forloop.counter }}">
                     Más información
                   </button>
@@ -93,17 +93,19 @@ h1 {
   position: relative;
   display: inline-block;
 }
+
 h1::after {
   content: "";
   position: absolute;
   left: 50%;
   bottom: -10px;
   transform: translateX(-50%);
-  width: 80px;
+  width: 80%;
   height: 3px;
   background: linear-gradient(90deg, #4e00cc, #8a2be2);
   border-radius: 5px;
 }
+
 
 /* === CARD === */
 .servicio-card {

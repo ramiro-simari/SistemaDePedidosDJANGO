@@ -31,14 +31,17 @@
       <!-- BARRA DE BUSQUEDA -->
       <form class="search-bar d-flex flex-grow-1 mx-lg-4" role="search" action="{% url 'Tienda' %}" method="GET">
         <input class="form-control search-input"
-               type="search"
-               name="q"
-               placeholder="Buscar productos..."
-               aria-label="Buscar">
+              type="search"
+              name="q"
+              placeholder="Buscar productos..."
+              value="{{ query|default:'' }}"
+              aria-label="Buscar">
         <button class="btn search-btn" type="submit">
           <i class="fa-solid fa-magnifying-glass"></i>
         </button>
       </form>
+
+
 
       <!-- BOTONES LOGIN Y REGISTRO -->
       <div class="auth-buttons d-flex align-items-center gap-2 ms-lg-auto mt-3 mt-lg-0">
@@ -80,6 +83,17 @@
     </div>
   </nav>
 
+  {% if messages %}
+    <div class="container mt-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} text-center fw-semibold">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+
   <!-- Contenido -->
   <main class="flex-grow-1">
     {% block content %}{% endblock %}
@@ -95,4 +109,6 @@
 
   <script src="https://kit.fontawesome.com/c2ec05f9f8.js" crossorigin="anonymous"></script>
 </body>
+
+
 </html>
