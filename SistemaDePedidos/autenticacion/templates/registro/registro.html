@@ -170,6 +170,17 @@
             font-size: 0.95rem;
         }
     }
+
+    ::placeholder {
+    color: #bbb !important;  /* gris claro legible */
+    opacity: 1; /* fuerza visibilidad en Safari/Firefox */
+    }
+
+    /* Para compatibilidad con navegadores viejos */
+    input::-webkit-input-placeholder { color: #bbb !important; }
+    input:-moz-placeholder { color: #bbb !important; }
+    input::-moz-placeholder { color: #bbb !important; }
+    input:-ms-input-placeholder { color: #bbb !important; }
 </style>
 
 <div class="register-wrapper">

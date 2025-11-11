@@ -70,7 +70,7 @@ ROOT_URLCONF = 'SistemaDePedidos.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -155,6 +155,7 @@ EMAIL_USE_TLS=True
 EMAIL_PORT=587
 EMAIL_HOST_USER="ramirosimari26@gmail.com"
 EMAIL_HOST_PASSWORD="aolc rjfo gtvo mqcc"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CRISPY_ALLOWED_TEMPLATE_PACK='bootstrap5'
 CRISPY_TEMPLATE_PACK='bootstrap5'

@@ -23,3 +23,14 @@ def tienda(request, categoria_id=None):
         "query": query or "",
     }
     return render(request, "tienda/tienda.html", contexto)
+
+def detalle_producto(request, producto_id):
+    producto = get_object_or_404(Producto, id=producto_id)
+    categorias = CategoriaProd.objects.all()
+
+    contexto = {
+        "producto": producto,
+        "categorias": categorias,
+    }
+    return render(request, "tienda/detalle_producto.html", contexto)
+

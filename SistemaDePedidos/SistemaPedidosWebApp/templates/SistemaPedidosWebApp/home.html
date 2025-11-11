@@ -43,70 +43,39 @@
   </div>
 
   <div class="row g-4 justify-content-center">
-    <!-- Producto 1 -->
+    {% for producto in productos_oferta %}
     <div class="col-6 col-md-4 col-lg-custom">
-      <div class="card h-100 border-0">
-        <img src="https://http2.mlstatic.com/D_NQ_NP_958194-MLA80073616806_102024-O.webp" class="card-img-top" alt="Auriculares Bluetooth">
-        <div class="card-body text-center">
-          <h5 class="card-title fw-semibold">Auriculares Bluetooth</h5>
-          <p class="text-muted text-decoration-line-through mb-1">$15.000</p>
-          <p class="fw-bold text-danger fs-5">$9.999</p>
-          <a href="#" class="btn btn-primary btn-sm px-4">Ver detalle</a>
-        </div>
-      </div>
-    </div>
+      <div class="card h-100 border-0 position-relative overflow-hidden">
 
-    <!-- Producto 2 -->
-    <div class="col-6 col-md-4 col-lg-custom">
-      <div class="card h-100 border-0">
-        <img src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1705655303-61sthuYkAL.jpg?crop=1xw:1.00xh;center,top&resize=980:*" class="card-img-top" alt="Smartwatch Deportivo">
-        <div class="card-body text-center">
-          <h5 class="card-title fw-semibold">Smartwatch Deportivo</h5>
-          <p class="text-muted text-decoration-line-through mb-1">$20.000</p>
-          <p class="fw-bold text-danger fs-5">$14.499</p>
-          <a href="#" class="btn btn-primary btn-sm px-4">Ver detalle</a>
+        {% if producto.en_oferta %}
+        <div class="badge-oferta position-absolute top-0 start-0 m-2 px-3 py-1 rounded-end">
+          OFERTA
         </div>
-      </div>
-    </div>
+        {% endif %}
 
-    <!-- Producto 3 -->
-    <div class="col-6 col-md-4 col-lg-custom">
-      <div class="card h-100 border-0">
-        <img src="https://row.hyperx.com/cdn/shop/files/hyperx_alloy_origins_60_ar_main_1.jpg?v=1737720359&width=1946" class="card-img-top" alt="Teclado Mecánico RGB">
-        <div class="card-body text-center">
-          <h5 class="card-title fw-semibold">Teclado Mecánico RGB</h5>
-          <p class="text-muted text-decoration-line-through mb-1">$25.000</p>
-          <p class="fw-bold text-danger fs-5">$18.999</p>
-          <a href="#" class="btn btn-primary btn-sm px-4">Ver detalle</a>
-        </div>
-      </div>
-    </div>
+        {% if producto.imagen %}
+        <img src="{{ producto.imagen.url }}" class="card-img-top" alt="{{ producto.nombre }}">
+        {% else %}
+        <img src="{% static 'SistemaPedidosWebApp/img/sin_imagen.png' %}" class="card-img-top" alt="{{ producto.nombre }}">
+        {% endif %}
 
-    <!-- Producto 4 -->
-    <div class="col-6 col-md-4 col-lg-custom">
-      <div class="card h-100 border-0">
-        <img src="https://http2.mlstatic.com/D_NQ_NP_958194-MLA80073616806_102024-O.webp" class="card-img-top" alt="Silla Gamer">
         <div class="card-body text-center">
-          <h5 class="card-title fw-semibold">Silla Gamer</h5>
-          <p class="text-muted text-decoration-line-through mb-1">$80.000</p>
-          <p class="fw-bold text-danger fs-5">$59.999</p>
-          <a href="#" class="btn btn-primary btn-sm px-4">Ver detalle</a>
-        </div>
-      </div>
-    </div>
+          <h5 class="card-title fw-semibold">{{ producto.nombre }}</h5>
 
-    <!-- Producto 5 -->
-    <div class="col-6 col-md-4 col-lg-custom">
-      <div class="card h-100 border-0">
-        <img src="https://acdn-us.mitiendanube.com/stores/001/593/734/products/muzan_angulo-902e2b4aa508a61e26169868849935261-73c6da95440ed3a46916986887454861-1024-1024.png" class="card-img-top" alt="Auriculares Gaming">
-        <div class="card-body text-center">
-          <h5 class="card-title fw-semibold">Auriculares Gaming</h5>
-          <p class="text-muted text-decoration-line-through mb-1">$30.000</p>
-          <p class="fw-bold text-danger fs-5">$24.999</p>
-          <a href="#" class="btn btn-primary btn-sm px-4">Ver detalle</a>
+          {% if producto.precio_oferta %}
+            <p class="text-light text-decoration-line-through mb-1">${{ producto.precio }}</p>
+            <p class="fw-bold text-danger fs-5 precio-oferta-animado">${{ producto.precio_oferta }}</p>
+          {% else %}
+            <p class="fw-bold fs-5">${{ producto.precio }}</p>
+          {% endif %}
+
+          <a href="{% url 'detalle_producto' producto.id %}" class="btn btn-primary btn-sm px-4 mt-2">Ver detalle</a>
         </div>
       </div>
     </div>
+    {% empty %}
+    <p class="text-center text-light">No hay productos en oferta en este momento.</p>
+    {% endfor %}
   </div>
 </div>
 
@@ -188,6 +157,26 @@
     box-shadow: 0 0 8px rgba(138, 92, 255, 0.4);
   }
 
+  /* --- Etiqueta de OFERTA --- */
+  .badge-oferta {
+    background: linear-gradient(135deg, #00c853, #2ecc71);
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+    box-shadow: 0 0 10px rgba(0, 255, 100, 0.5);
+    z-index: 10;
+  }
+
+  .badge-oferta::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: -10px;
+    border-top: 10px solid transparent;
+    border-left: 10px solid #2ecc71;
+  }
+
   @media (max-width: 768px) {
     .card-img-top {
       height: 180px;
@@ -204,9 +193,5 @@
     }
   }
 </style>
-
-
-<!-- Sección CTA final -->
-
 
 {% endblock %}

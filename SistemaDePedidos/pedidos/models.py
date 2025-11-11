@@ -1,49 +1,53 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from tienda.models import Producto
 from django.db.models import F, Sum, FloatField
-from django.utils import timezone
+from tienda.models import Producto
 
 User = get_user_model()
+
 
 # ----------------------------
 # MODELO DE PEDIDO
 # ----------------------------
 class Pedido(models.Model):
     ESTADOS = [
-        ('pendiente', 'Pendiente'),
-        ('preparacion', 'En preparación'),
-        ('viajando', 'Viajando'),
-        ('entregado', 'Entregado'),
+        ('PENDIENTE', 'Pendiente'),
+        ('EN_PREPARACION', 'En preparación'),
+        ('VIAJANDO', 'Viajando'),
+        ('ENTREGADO', 'Entregado'),
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
-    fecha_facturacion = models.DateField(null=True, blank=True)  # 👈 clave: valor por defecto
-    created_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Pedido #{self.id}"
-
-    @property
-    def total(self):
-        return self.lineas.aggregate(
-            total=Sum(F("precio") * F("cantidad"), output_field=FloatField())
-        )["total"] or 0
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name="pedidos")
+    fecha_pedido = models.DateTimeField(auto_now_add=True)
+    estado = models.CharField(max_length=20, choices=ESTADOS, default='PENDIENTE')
 
     class Meta:
         db_table = 'pedidos'
-        verbose_name = 'pedido'
-        verbose_name_plural = 'pedidos'
-        ordering = ['-created_at']
+        verbose_name = 'Pedido'
+        verbose_name_plural = 'Pedidos'
+        ordering = ['-fecha_pedido']
 
+    def __str__(self):
+        return f"Pedido #{self.id} - {self.usuario.username} ({self.get_estado_display()})"
+
+    @property
+    def total(self):
+        """Calcula el total sumando todas las líneas de pedido."""
+        return self.lineas.aggregate(
+            total=Sum(F("precio") * F("cantidad"), output_field=FloatField())
+        )["total"] or 0
+    
 
 
 # ----------------------------
 # MODELO DE LÍNEAS DE PEDIDO
 # ----------------------------
 class LineaPedidos(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name="lineapedidos")
+    pedido = models.ForeignKey(
+        Pedido,
+        on_delete=models.CASCADE,
+        related_name="lineas"
+    )
     producto = models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True, blank=True)
     cantidad = models.PositiveIntegerField(default=1)
     precio = models.FloatField(default=0.0)
@@ -57,8 +61,8 @@ class LineaPedidos(models.Model):
 
     def __str__(self):
         if self.producto:
-            return f'{self.cantidad} x {self.producto.nombre}'
-        return 'Línea sin producto'
+            return f"{self.cantidad} x {self.producto.nombre}"
+        return f"Línea de pedido #{self.id} (sin producto)"
 
     @property
     def subtotal(self):
