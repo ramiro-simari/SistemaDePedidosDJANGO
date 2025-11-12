@@ -13,6 +13,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Recopilar archivos estáticos
 RUN python manage.py collectstatic --noinput
 
+
 # Exponer puerto
 EXPOSE 8000
 
