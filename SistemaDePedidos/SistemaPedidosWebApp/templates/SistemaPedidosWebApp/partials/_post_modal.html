@@ -1,0 +1,107 @@
+<!-- Modal para mostrar el contenido completo de un post -->
+<div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content bg-dark text-light border-0 shadow-lg rounded-4">
+      
+      <!-- Encabezado -->
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold text-gradient" id="postModalLabel">Título del Post</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+
+      <!-- Imagen -->
+      <div id="postModalImageContainer" class="text-center mt-3" style="display: none;">
+        <img id="postModalImage" src="" alt="Imagen del post" class="rounded-3 shadow-sm modal-img">
+      </div>
+
+      <!-- Contenido -->
+      <div class="modal-body mt-3">
+        <p id="postModalContent" class="text-light"></p>
+      </div>
+
+      <!-- Footer -->
+      <div class="modal-footer border-0 justify-content-center">
+        <button type="button" class="btn btn-outline-light rounded-pill px-4" data-bs-dismiss="modal">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  const postModal = document.getElementById('postModal');
+  postModal.addEventListener('show.bs.modal', event => {
+    const button = event.relatedTarget;
+    const title = button.getAttribute('data-title');
+    const content = button.getAttribute('data-content');
+    const image = button.getAttribute('data-image');
+
+    const modalTitle = postModal.querySelector('.modal-title');
+    const modalContent = postModal.querySelector('#postModalContent');
+    const modalImageContainer = postModal.querySelector('#postModalImageContainer');
+    const modalImage = postModal.querySelector('#postModalImage');
+
+    modalTitle.textContent = title;
+    modalContent.innerHTML = content.replace(/\n/g, "<br>");
+
+    if (image) {
+      modalImage.src = image;
+      modalImageContainer.style.display = 'block';
+    } else {
+      modalImageContainer.style.display = 'none';
+    }
+  });
+</script>
+
+<!-- Estilos -->
+<style>
+  .modal-content {
+    background: radial-gradient(circle at top left, #1e1e1e, #111);
+    border: 1px solid rgba(180, 122, 255, 0.3);
+    animation: fadeInModal 0.4s ease-out;
+  }
+
+  .modal-header .btn-close {
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
+  }
+
+  .modal-header .btn-close:hover {
+    opacity: 1;
+  }
+
+  .modal-img {
+    max-height: 320px;
+    width: auto;
+    border: 1px solid rgba(180, 122, 255, 0.2);
+  }
+
+  .text-gradient {
+    background: linear-gradient(135deg, #6f42c1, #b47aff);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .modal-body {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .btn-outline-light {
+    border-color: rgba(255,255,255,0.4);
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-light:hover {
+    background: linear-gradient(135deg, #6f42c1, #b47aff);
+    border-color: transparent;
+  }
+
+  @keyframes fadeInModal {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background: #0f0f0f;
+            color: #eee;
+            font-family: 'Poppins', sans-serif;
+            padding: 30px;
+        }
+        .card {
+            background: #1a1a1a;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 0 15px rgba(128,0,255,0.2);
+        }
+        .title {
+            color: #a65cff;
+            font-size: 1.5rem;
+        }
+        .highlight {
+            color: #fff;
+            font-weight: 600;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2 class="title">Actualización de tu pedido #{{ pedido.id }}</h2>
+        <p>Hola <span class="highlight">{{ usuario.username }}</span>,</p>
+        <p>Te informamos que <span class="highlight">{{ estado_texto }}</span>.</p>
+        <p class="footer">Fenrir PC — Tienda Gaming</p>
+    </div>
+</body>
+</html>

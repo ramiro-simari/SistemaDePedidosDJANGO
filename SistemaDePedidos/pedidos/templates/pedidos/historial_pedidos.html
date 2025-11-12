@@ -1,0 +1,163 @@
+{% extends "SistemaPedidosWebApp/base.html" %}
+{% block title %}Historial de pedidos{% endblock %}
+{% block content %}
+
+<style>
+.pedido-container {
+  background: radial-gradient(circle at center, #111 0%, #0a0a0a 100%);
+  min-height: 100vh;
+  padding: 60px 20px;
+}
+.pedido-card {
+  background: rgba(25, 25, 25, 0.95);
+  border-radius: 18px;
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.pedido-title {
+  color: #fff;
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+.table-dark th { color: #aaa; border-color: #333; text-transform: uppercase; font-size: 0.85rem; }
+.table-dark td { color: #eee; border-color: #2c2c2c; }
+.btn-detalle {
+  border: 1px solid #666;
+  color: #fff;
+  background: linear-gradient(135deg, #222, #111);
+  border-radius: 10px;
+  transition: all 0.25s;
+  font-weight: 500;
+}
+.btn-detalle:hover {
+  background: linear-gradient(135deg, #7c5dfa, #4e1fd1);
+  border-color: transparent;
+  transform: translateY(-2px);
+}
+.modal-content {
+  background: #111;
+  border-radius: 16px;
+  border: 1px solid #2a2a2a;
+}
+.modal-title { color: #fff; }
+.list-group-item {
+  background: #1a1a1a;
+  color: #ddd;
+  border-color: #2a2a2a;
+}
+.total-line { color: #fff; font-size: 1.2rem; font-weight: 600; }
+</style>
+
+<div class="pedido-container">
+  <div class="container pedido-card p-4">
+    <h2 class="pedido-title">Historial de pedidos</h2>
+
+    {% if pedidos %}
+    <div class="table-responsive">
+      <table class="table table-dark table-hover align-middle text-center">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pedido in pedidos %}
+          <tr>
+            <td>#{{ pedido.id }}</td>
+            <td>{{ pedido.fecha_pedido|date:"d/m/Y H:i" }}</td>
+            <td>{{ pedido.get_estado_display }}</td>
+            <td>${{ pedido.total }}</td>
+            <td>
+              <button type="button"
+                class="btn btn-detalle btn-sm ver-detalle"
+                data-id="{{ pedido.id }}"
+                data-fecha="{{ pedido.fecha_pedido|date:'d/m/Y H:i' }}"
+                data-estado="{{ pedido.get_estado_display }}"
+                data-total="{{ pedido.total }}"
+                data-lineas='[
+                    {% for linea in pedido.lineas.all %}
+                        {"cantidad": "{{ linea.cantidad }}", "producto": "{{ linea.producto.nombre }}", "subtotal": "{{ linea.subtotal }}"}{% if not forloop.last %},{% endif %}
+                    {% endfor %}
+                ]'>
+                Ver detalle
+            </button>
+
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+      <p class="text-center text-muted">Todavía no realizaste ningún pedido.</p>
+    {% endif %}
+  </div>
+</div>
+
+<!-- === MODAL ÚNICO === -->
+<div class="modal fade" id="pedidoModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalle del pedido</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p><strong>Fecha:</strong> <span id="modal-fecha"></span></p>
+        <p><strong>Estado:</strong> <span id="modal-estado"></span></p>
+        <hr>
+        <h6>Productos:</h6>
+        <ul class="list-group list-group-flush" id="modal-lineas"></ul>
+        <hr>
+        <div class="text-end total-line">Total: $<span id="modal-total"></span></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const modalEl = document.getElementById("pedidoModal");
+  const modal = new bootstrap.Modal(modalEl);
+
+  const modalFecha = document.getElementById("modal-fecha");
+  const modalEstado = document.getElementById("modal-estado");
+  const modalTotal = document.getElementById("modal-total");
+  const modalLineas = document.getElementById("modal-lineas");
+
+  document.querySelectorAll(".ver-detalle").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const lineas = JSON.parse(btn.dataset.lineas || "[]");
+      modalFecha.textContent = btn.dataset.fecha || "-";
+      modalEstado.textContent = btn.dataset.estado || "-";
+      modalTotal.textContent = btn.dataset.total || "0";
+
+      modalLineas.innerHTML = "";
+      lineas.forEach(linea => {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between";
+        li.innerHTML = `
+          <span>${linea.cantidad} × ${linea.producto}</span>
+          <span>$${linea.subtotal}</span>
+        `;
+        modalLineas.appendChild(li);
+      });
+
+      modal.show();
+    });
+  });
+});
+</script>
+
+
+
+{% endblock %}

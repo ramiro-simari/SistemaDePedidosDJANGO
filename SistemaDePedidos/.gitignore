@@ -1,0 +1,30 @@
+# Ignorar entorno virtual
+env/
+venv/
+ENV/
+
+# Ignorar configuraciones locales
+.env
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.sqlite3
+*.log
+
+# Ignorar archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos estáticos compilados
+staticfiles/
+
+# Ignorar configuraciones de VSCode o IDEs
+.vscode/
+.idea/
+
+# Permitir estos archivos importantes
+!requirements.txt
+!Procfile
+!render.yaml
+!manage.py
