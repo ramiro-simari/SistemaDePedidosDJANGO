@@ -1,7 +1,7 @@
 # Imagen base con Python
 FROM python:3.11
 
-# Configurar directorio de trabajo
+# Crear directorio de trabajo
 WORKDIR /app
 
 # Copiar dependencias e instalarlas
@@ -12,10 +12,10 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Recolectar archivos estáticos
-RUN python SistemaDePedidos/manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
-# Exponer el puerto (Railway usa la variable $PORT)
+# Exponer puerto
 EXPOSE 8000
 
 # Comando de inicio
-CMD ["python", "SistemaDePedidos/manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "SistemaDePedidos.wsgi:application", "--bind", "0.0.0.0:8000"]
