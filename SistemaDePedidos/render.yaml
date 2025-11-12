@@ -4,9 +4,11 @@ services:
     env: python
     plan: free
     buildCommand: |
+      cd SistemaDePedidos
       pip install -r requirements.txt
       python manage.py collectstatic --noinput
-    startCommand: gunicorn SistemaDePedidos.wsgi:application
+    startCommand: |
+      cd SistemaDePedidos && gunicorn SistemaDePedidos.wsgi:application
     envVars:
       - key: DEBUG
         value: False
@@ -16,6 +18,10 @@ services:
         fromDatabase:
           name: sistema-de-pedidos-db
           property: connectionString
+      - key: DJANGO_SETTINGS_MODULE
+        value: SistemaDePedidos.settings
+      - key: PYTHON_VERSION
+        value: 3.13.4
 
 databases:
   - name: sistema-de-pedidos-db
