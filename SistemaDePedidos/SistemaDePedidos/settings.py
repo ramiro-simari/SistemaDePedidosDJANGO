@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'pedidos',
     'django_extensions',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 # ✅ Middleware
@@ -102,6 +104,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'CLOUD_NAME',
+    'API_KEY': 'API_KEY',
+    'API_SECRET': 'API_SECRET',
+}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
