@@ -3,6 +3,7 @@ import environ
 from django.contrib.messages import constants as mensajes_de_error
 from pathlib import Path
 import dj_database_url
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -75,9 +76,8 @@ import dj_database_url
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=f"postgresql://{env('DB_USER', default='')}:{env('DB_PASSWORD', default='')}@{env('DB_HOST', default='')}:{env('DB_PORT', default='5432')}/{env('DB_NAME', default='')}",
-        conn_max_age=600,
-        ssl_require=False
+        default=config('DATABASE_URL', default='sqlite:///db.sqlite3'),
+        conn_max_age=600
     )
 }
 
