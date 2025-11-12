@@ -1,1 +1,1 @@
-web: gunicorn SistemaDePedidos.wsgi
+web: gunicorn SistemaDePedidos.SistemaDePedidos.wsgi:application --chdir SistemaDePedidos
