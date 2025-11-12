@@ -1,0 +1,6 @@
+[build]
+builder = "python"
+
+[deploy]
+buildCommand = "pip install -r SistemaDePedidos/requirements.txt && python SistemaDePedidos/manage.py collectstatic --noinput"
+startCommand = "gunicorn SistemaDePedidos.SistemaDePedidos.wsgi:application --chdir SistemaDePedidos"
