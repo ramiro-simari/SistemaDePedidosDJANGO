@@ -10,33 +10,28 @@ class Carro:
     def agregar(self, producto):
         producto_id = str(producto.id)
 
-        # Si el producto no está en el carro
         if producto_id not in self.carro.keys():
-            # Validar que haya stock
             if producto.stock > 0:
                 self.carro[producto_id] = {
                     "producto_id": producto.id,
                     "nombre": producto.nombre,
-                    "precio": str(producto.precio),
+                    # ✅ Asegurarse de llamar al método:
+                    "precio_unitario": float(producto.get_precio_final()),
                     "cantidad": 1,
                     "imagen": producto.imagen.url if producto.imagen else "",
                 }
                 self.guardar_carro()
-                return True  # agregado correctamente
+                return True
             else:
-                return False  # sin stock disponible
-
-        # Si el producto ya está en el carro, controlar stock
+                return False
         else:
             for key, value in self.carro.items():
                 if key == producto_id:
                     if value["cantidad"] < producto.stock:
                         value["cantidad"] += 1
-                        value["precio"] = float(value["precio"]) + producto.precio
                         self.guardar_carro()
                         return True
                     else:
-                        # Ya se alcanzó el límite de stock
                         return False
 
     def guardar_carro(self):
@@ -54,7 +49,6 @@ class Carro:
         for key, value in self.carro.items():
             if key == producto_id:
                 value["cantidad"] -= 1
-                value["precio"] = float(value["precio"]) - producto.precio
                 if value["cantidad"] < 1:
                     self.eliminar(producto)
                 break
@@ -63,3 +57,11 @@ class Carro:
     def limpiar_carro(self):
         self.session["carro"] = {}
         self.session.modified = True
+
+
+    def obtener_total(self):
+        """Devuelve el total del carrito"""
+        total = 0
+        for item in self.carro.values():
+            total += item["precio_unitario"] * item["cantidad"]
+        return total
