@@ -9,7 +9,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copiar todo el código del proyecto
-COPY . .
+COPY SistemaDePedidos/requirements.txt .
 
 # Recolectar archivos estáticos
 RUN python manage.py collectstatic --noinput
