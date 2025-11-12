@@ -3,11 +3,9 @@ services:
     name: sistema-de-pedidos
     env: python
     plan: free
-    buildCommand: |
-      cd SistemaDePedidos
-      pip install -r requirements.txt
-      python manage.py collectstatic --noinput
-    startCommand: cd SistemaDePedidos && gunicorn SistemaDePedidos.wsgi:application
+    buildCommand: pip install -r SistemaDePedidos/requirements.txt && python SistemaDePedidos/manage.py collectstatic --noinput
+    startCommand: gunicorn SistemaDePedidos.SistemaDePedidos.wsgi:application --chdir SistemaDePedidos
+
     envVars:
       - key: DEBUG
         value: False
