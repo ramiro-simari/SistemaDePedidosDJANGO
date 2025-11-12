@@ -72,11 +72,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SistemaDePedidos.wsgi.application'
 
 # ✅ Base de datos (Render usa DATABASE_URL)
+
 import dj_database_url
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': dj_database_url.config(default='sqlite:///db.sqlite3')
 }
+
 
 
 # ✅ Validadores de contraseña
