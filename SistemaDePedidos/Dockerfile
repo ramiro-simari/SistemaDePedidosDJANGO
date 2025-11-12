@@ -1,25 +1,26 @@
-
-RUN ls -la
-
 # Imagen base con Python
-FROM python:3.13.4
+FROM python:3.11-slim
 
-# Crear directorio de trabajo
+# Establecer directorio de trabajo dentro del contenedor
 WORKDIR /app
 
-# Copiar dependencias e instalarlas
+# Verificar qué archivos hay (debug)
+RUN ls -la
+
+# Copiar el archivo de dependencias
 COPY requirements.txt .
+
+# Instalar dependencias
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copiar todo el código del proyecto
-COPY requirements.txt .
+# Copiar el resto del proyecto
+COPY . .
 
-
-# Recolectar archivos estáticos
+# Recopilar archivos estáticos
 RUN python manage.py collectstatic --noinput
 
-# Exponer puerto
+# Exponer el puerto
 EXPOSE 8000
 
-# Comando de inicio
+# Comando para iniciar la aplicación
 CMD ["gunicorn", "SistemaDePedidos.wsgi:application", "--bind", "0.0.0.0:8000"]
