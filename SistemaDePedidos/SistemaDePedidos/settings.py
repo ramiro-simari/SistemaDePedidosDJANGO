@@ -73,17 +73,9 @@ WSGI_APPLICATION = 'SistemaDePedidos.wsgi.application'
 
 # ✅ Base de datos (Render usa DATABASE_URL)
 
-import dj_database_url
-
-import dj_database_url
-import os
-
 DATABASES = {
     'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
 }
-
-
-
 
 # ✅ Validadores de contraseña
 AUTH_PASSWORD_VALIDATORS = [
