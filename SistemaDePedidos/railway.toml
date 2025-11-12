@@ -1,6 +1,9 @@
 [build]
-builder = "python"
+builder = "Nixpacks"
 
 [deploy]
-buildCommand = "pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput"
 startCommand = "gunicorn SistemaDePedidos.wsgi:application"
+buildCommand = "pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput"
+
+[variables]
+PYTHON_VERSION = "3.13.4"
