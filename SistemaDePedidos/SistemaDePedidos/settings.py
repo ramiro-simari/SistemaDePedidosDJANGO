@@ -103,11 +103,12 @@ STATIC_ROOT = BASE_DIR / "staticfiles"  # Render los servirá desde aquí
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
-CLOUDINARY_URL = env('CLOUDINARY_URL')
+CLOUDINARY_URL = os.environ.get('CLOUDINARY_URL')
+
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
