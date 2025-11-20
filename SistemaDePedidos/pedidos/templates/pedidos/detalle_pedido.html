@@ -1,0 +1,137 @@
+{% extends "SistemaPedidosWebApp/base.html" %}
+
+{% block content %}
+
+<style>
+    .pedido-card {
+        background: #111;
+        border: 1px solid #6f2dbd;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 0 15px rgba(111, 45, 189, 0.25);
+        color: #e9e9e9;
+    }
+
+    .pedido-title {
+        color: #c084fc;
+        font-weight: 700;
+        border-bottom: 1px solid #6f2dbd;
+        padding-bottom: 8px;
+        margin-bottom: 20px;
+    }
+
+    .pedido-info p strong {
+        color: #d6b0ff;
+    }
+
+    .badge-estado {
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+    }
+
+    .estado-pendiente {
+        background-color: #6f2dbd;
+        color: white;
+    }
+
+    .estado-proceso {
+        background-color: #4f46e5;
+        color: white;
+    }
+
+    .estado-enviado {
+        background-color: #16a34a;
+        color: white;
+    }
+
+    .estado-cancelado {
+        background-color: #dc2626;
+        color: white;
+    }
+
+    /* Tabla */
+    table.detalle-table thead {
+        background-color: #1a1a1a;
+        color: #d6b0ff;
+        border-bottom: 2px solid #6f2dbd;
+    }
+
+    table.detalle-table tbody tr:hover {
+        background-color: #2a2a2a;
+        transition: 0.2s;
+    }
+
+    /* Botón volver */
+    .btn-purple {
+        background-color: #6f2dbd;
+        border-color: #6f2dbd;
+        color: white;
+    }
+
+    .btn-purple:hover {
+        background-color: #8d4dfc;
+        border-color: #8d4dfc;
+        color: white;
+    }
+</style>
+
+
+<div class="pedido-card">
+
+    <h2 class="pedido-title">Pedido #{{ pedido.id }}</h2>
+
+    <div class="pedido-info mb-4">
+
+        <p><strong>Fecha:</strong> {{ pedido.fecha_facturacion }}</p>
+
+        <p><strong>Estado:</strong>
+            {% if pedido.estado == "P" %}
+                <span class="badge-estado estado-pendiente">Pendiente</span>
+            {% elif pedido.estado == "PR" %}
+                <span class="badge-estado estado-proceso">Procesando</span>
+            {% elif pedido.estado == "E" %}
+                <span class="badge-estado estado-enviado">Enviado</span>
+            {% elif pedido.estado == "C" %}
+                <span class="badge-estado estado-cancelado">Cancelado</span>
+            {% else %}
+                <span class="badge bg-secondary">{{ pedido.get_estado_display }}</span>
+            {% endif %}
+        </p>
+
+        <p><strong>Total:</strong> ${{ pedido.total }}</p>
+    </div>
+
+
+    <h3 class="text-light mb-3" style="color:#d6b0ff;">Productos del pedido</h3>
+
+    <div class="table-responsive">
+        <table class="table detalle-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in lineas %}
+                <tr>
+                    <td>{{ l.producto.nombre }}</td>
+                    <td>{{ l.cantidad }}</td>
+                    <td>${{ l.precio }}</td>
+                    <td>${{ l.subtotal }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <a href="{% url 'pedidos:mis_pedidos' %}" class="btn btn-purple mt-3">
+        Volver a mis pedidos
+    </a>
+
+</div>
+
+{% endblock %}

@@ -19,7 +19,8 @@ class Producto(models.Model):
     categorias = models.ForeignKey(CategoriaProd, on_delete=models.CASCADE)
     imagen = models.ImageField(upload_to="tienda", null=True, blank=True)
     precio = models.FloatField()
-    stock = models.PositiveIntegerField(default=0)  # 👈 agregado
+    precio_oferta = models.FloatField(null=True, blank=True)  # 👈 Nuevo campo
+    stock = models.PositiveIntegerField(default=0)
     disponibilidad = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now_add=True)
@@ -30,3 +31,12 @@ class Producto(models.Model):
 
     def __str__(self):
         return self.nombre
+
+    @property
+    def tiene_oferta(self):
+        return (
+            self.precio_oferta is not None 
+            and self.precio_oferta > 0 
+            and self.precio_oferta < self.precio
+        )
+

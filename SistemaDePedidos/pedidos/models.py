@@ -19,7 +19,7 @@ class Pedido(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     estado = models.CharField(max_length=20, choices=ESTADOS, default='pendiente')
-    fecha_facturacion = models.DateField(null=True, blank=True)  # 👈 clave: valor por defecto
+    fecha_facturacion = models.DateField(null=True, blank=True)  
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -27,9 +27,11 @@ class Pedido(models.Model):
 
     @property
     def total(self):
-        return self.lineas.aggregate(
+        result = self.lineapedidos.aggregate(
             total=Sum(F("precio") * F("cantidad"), output_field=FloatField())
-        )["total"] or 0
+        )["total"]
+        return float(result) if result is not None else 0.0
+
 
     class Meta:
         db_table = 'pedidos'
@@ -38,13 +40,21 @@ class Pedido(models.Model):
         ordering = ['-created_at']
 
 
-
 # ----------------------------
 # MODELO DE LÍNEAS DE PEDIDO
 # ----------------------------
 class LineaPedidos(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name="lineapedidos")
-    producto = models.ForeignKey(Producto, on_delete=models.SET_NULL, null=True, blank=True)
+    pedido = models.ForeignKey(
+        Pedido, 
+        on_delete=models.CASCADE, 
+        related_name="lineapedidos"
+    )
+    producto = models.ForeignKey(
+        Producto, 
+        on_delete=models.SET_NULL, 
+        null=True, 
+        blank=True
+    )
     cantidad = models.PositiveIntegerField(default=1)
     precio = models.FloatField(default=0.0)
     created_at = models.DateTimeField(auto_now_add=True)

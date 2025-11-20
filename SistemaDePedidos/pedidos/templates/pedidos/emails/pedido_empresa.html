@@ -1,0 +1,25 @@
+<h2>Nuevo pedido recibido</h2>
+
+<p>Pedido <strong>#{{ pedido.id }}</strong></p>
+<p>Cliente: {{ cliente.first_name }} {{ cliente.last_name }} - {{ cliente.email }}</p>
+
+<table border="1" cellpadding="6" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+            <th>Producto</th>
+            <th>Cant.</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for l in lineas %}
+        <tr>
+            <td>{{ l.producto.nombre }}</td>
+            <td>{{ l.cantidad }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h3>Total: ${{ total }}</h3>
+
+<p>Proceder a preparar el pedido.</p>

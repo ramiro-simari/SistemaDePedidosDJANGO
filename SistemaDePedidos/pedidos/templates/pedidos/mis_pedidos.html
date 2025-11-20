@@ -1,0 +1,136 @@
+{% extends "SistemaPedidosWebApp/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* --- Estilo oscuro general --- */
+    .orders-card {
+        background: #111;
+        border: 1px solid #6f2dbd;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 0 15px rgba(111, 45, 189, 0.25);
+    }
+
+    .orders-title {
+        color: #c084fc;
+        font-weight: 600;
+        border-bottom: 1px solid #6f2dbd;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* --- Tabla oscura --- */
+    table.orders-table {
+        color: #e9e9e9;
+    }
+
+    table.orders-table thead tr {
+        background-color: #1a1a1a;
+        color: #d6b0ff;
+        border-bottom: 2px solid #6f2dbd;
+    }
+
+    table.orders-table tbody tr:hover {
+        background-color: #2a2a2a;
+        transition: 0.2s;
+    }
+
+    /* --- Botón violeta --- */
+    .btn-purple {
+        background-color: #a064e6;
+        border-color: #8d45df;
+    }
+
+    .btn-purple:hover {
+        background-color: #8d4dfc;
+        border-color: #8d4dfc;
+    }
+
+    /* --- Badges de estado --- */
+    .badge-estado {
+        padding: 6px 10px;
+        border-radius: 8px;
+        font-size: 0.85rem;
+    }
+
+    .estado-pendiente {
+        background-color: #6f2dbd;
+        color: white;
+    }
+
+    .estado-proceso {
+        background-color: #4f46e5;
+        color: white;
+    }
+
+    .estado-enviado {
+        background-color: #16a34a;
+        color: white;
+    }
+
+    .estado-cancelado {
+        background-color: #dc2626;
+        color: white;
+    }
+
+</style>
+
+
+<div class="orders-card">
+
+    <h2 class="orders-title">Mis pedidos</h2>
+
+    {% if pedidos %}
+        <div class="table-responsive">
+            <table class="table orders-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>#{{ pedido.id }}</td>
+                        <td>{{ pedido.fecha_facturacion }}</td>
+
+                        <td>
+                            {% if pedido.estado == "P" %}
+                                <span class="badge-estado estado-pendiente">Pendiente</span>
+                            {% elif pedido.estado == "PR" %}
+                                <span class="badge-estado estado-proceso">Procesando</span>
+                            {% elif pedido.estado == "E" %}
+                                <span class="badge-estado estado-enviado">Enviado</span>
+                            {% elif pedido.estado == "C" %}
+                                <span class="badge-estado estado-cancelado">Cancelado</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ pedido.get_estado_display }}</span>
+                            {% endif %}
+                        </td>
+
+                        <td>${{ pedido.total }}</td>
+
+                        <td>
+                            <a class="btn btn-purple btn-sm" href="{% url 'pedidos:detalle_pedido' pedido.id %}">
+                                Ver detalle
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+        <p>No tenés pedidos todavía.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

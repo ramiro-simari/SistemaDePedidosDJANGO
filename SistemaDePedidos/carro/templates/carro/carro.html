@@ -1,0 +1,90 @@
+{% extends "SistemaPedidosWebApp/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container py-5" id="carrito-container">
+    <h2 class="mb-4">Tu carrito</h2>
+
+    {% if carro %}
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for key, item in carro.items %}
+            <tr>
+                <td>
+                    <img src="{{ item.imagen }}" alt="{{ item.nombre }}"
+                        style="width: 70px; height: 70px; object-fit: cover; border-radius: 8px;">
+                </td>
+
+                <td>{{ item.nombre }}</td>
+                <td>${{ item.precio }}</td>
+                <td>{{ item.cantidad }}</td>
+
+                <td>
+                    <a href="#" class="btn btn-sm btn-success btn-add" data-id="{{ item.producto_id }}">+</a>
+                    <a href="#" class="btn btn-sm btn-warning btn-restar" data-id="{{ item.producto_id }}">-</a>
+                    <a href="#" class="btn btn-sm btn-danger btn-eliminar" data-id="{{ item.producto_id }}">x</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'carro:realizar_pedido' %}" class="btn btn-success">Realizar pedido</a>
+        <a href="{% url 'carro:limpiar' %}" class="btn btn-danger">Vaciar carrito</a>
+
+    {% else %}
+        <h4>No hay productos en el carrito.</h4>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+
+    // Recargar solo el contenido del carrito (no la página completa)
+    function actualizarCarrito() {
+        $("#carrito-container").load(location.href + " #carrito-container>*");
+    }
+
+    $(document).on("click", ".btn-add", function(e) {
+        e.preventDefault();
+        const id = $(this).data("id");
+        $.get(`/carro/agregar/${id}/`, function() {
+            actualizarCarrito();
+        });
+    });
+
+    $(document).on("click", ".btn-restar", function(e) {
+        e.preventDefault();
+        const id = $(this).data("id");
+        $.get(`/carro/restar/${id}/`, function() {
+            actualizarCarrito();
+        });
+    });
+
+    $(document).on("click", ".btn-eliminar", function(e) {
+        e.preventDefault();
+        const id = $(this).data("id");
+        $.get(`/carro/eliminar/${id}/`, function() {
+            actualizarCarrito();
+        });
+    });
+
+});
+</script>
+{% endblock %}

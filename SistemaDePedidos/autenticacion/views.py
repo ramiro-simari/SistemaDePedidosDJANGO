@@ -3,26 +3,38 @@ from django.views.generic import View
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
+from .forms import RegistroForm
+from .models import Perfil
+from django.contrib.auth.models import User
+
 
 # Create your views here.
 
 class VRegistro(View):
 
     def get(self, request):
-        form=UserCreationForm()
+        form = RegistroForm()
         return render(request,"registro/registro.html",{"form":form})
 
     def post(self, request):
-        form=UserCreationForm(request.POST)
+        form = RegistroForm(request.POST)
 
         if form.is_valid():
-            usuario=form.save()
+            usuario = form.save()
+
+            # Guardar el teléfono en el perfil
+            telefono = form.cleaned_data.get("telefono")
+            usuario.perfil.telefono = telefono
+            usuario.perfil.save()
+
             login(request, usuario)
             return redirect('Home')
+
         else:
             for msg in form.error_messages:
                 messages.error(request, form.error_messages[msg])
-            return render(request, "registro/registro.html",{"form":form})
+
+        return render(request, "registro/registro.html", {"form":form})
 
 def cerrar_sesion(request):
     logout(request)
